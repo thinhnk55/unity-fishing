@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2633c311359dae4b9e0b9da2d1e4818, type: 3}
+  m_Name: SpriteFactory
+  m_EditorClassIdentifier: 
+  fish:
+  - {fileID: 21300000, guid: 85011d0c27b993148b3192ce63fb696c, type: 3}
+  - {fileID: 21300000, guid: b5015e670ddba974c9936ac8032a97ac, type: 3}
+  - {fileID: 21300000, guid: ddb81e2806c821646bb8ad7ddeb55d47, type: 3}
