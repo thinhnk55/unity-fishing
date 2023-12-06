@@ -1,16 +1,30 @@
 using DG.Tweening;
 using Framework;
+using HellTap.PoolKit;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Fishing : GrabableObject
 {
     public TypeFishing TypeFishing;
     [SerializeField] float timeCountDownEnable;
+    private float timer;
+
+    [Header("Anim Fly To Target")]
     [SerializeField] Transform target;
+    [SerializeField] float timeFly;
+    [SerializeField] float timeZoomOut;
+
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        timer = timeCountDownEnable;
+    }
 
     public override void OnCollectObject(Hook collector)
     {
@@ -19,28 +33,36 @@ public class Fishing : GrabableObject
         }
         else
         {
-                
+            
         }
-
+        target = ItemCollection.Instance.items[0].transform;
         this.gameObject.SetActive(false);
         collector.RemoveObject();
-        // late: make anim fly to image require
+        FlyToTarget();
     }
 
     private void Update()
     {
-        timeCountDownEnable -= Time.deltaTime;   
-        if(timeCountDownEnable < 0)
+        timer -= Time.deltaTime;   
+        if(timer < 0)
         {
             this.gameObject.SetActive(false);
         }
     }
 
-    //private void FlyToTarget()
-    //{
-    //    this.transform.DOMove(target.localPosition, 2f).OnComplete(() =>
-    //    {
-    //        this.gameObject.SetActive(false);
-    //    });
-    //}
+
+    [SerializeField] Ease easeType;
+    private void FlyToTarget()
+    {
+        Image itemFly = ObjectPoolManager.SpawnObject<Image>(PrefabFactory.ItemFly, this.transform.position, target.parent.transform, true);
+        itemFly.rectTransform.localScale = Vector3.one;
+
+        itemFly.rectTransform.DOMove(target.position, timeFly).SetEase(easeType).OnComplete(() =>
+        {
+            itemFly.rectTransform.DOScale(0, timeZoomOut).OnComplete(() =>
+            {
+                itemFly.gameObject.SetActive(false);
+            });
+        });
+    }
 }

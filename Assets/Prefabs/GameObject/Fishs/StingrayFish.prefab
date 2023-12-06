@@ -64,10 +64,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Mass: 5
-  attachable: 0
+  attachable: 1
   TypeFishing: 1
-  timeCountDownEnable: 40
+  timeCountDownEnable: 25
   target: {fileID: 0}
+  timeFly: 0.75
+  timeZoomOut: 0.25
+  easeType: 1
 --- !u!114 &2899622804218979233
 MonoBehaviour:
   m_ObjectHideFlags: 0

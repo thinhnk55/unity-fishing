@@ -17,7 +17,7 @@ public class Hook : MonoBehaviour
         if (collision.CompareTag("DigableObject"))
         {
             if (currentHoldObject != null) return;
-            collision.GetComponent<ICatchable>().OnHookInteracted(this);
+            collision.GetComponent<IGrabable>().OnHookInteracted(this);
         }
         else if (collision.CompareTag("Wall"))
         {
@@ -53,7 +53,7 @@ public class Hook : MonoBehaviour
         if (currentHoldObject == null) return;
 
         digger.SetPullSpeedBasedOnObjectMass(1);
-        if (despawnObj) currentHoldObject.gameObject.SetActive(false);
+        //if (despawnObj) currentHoldObject.gameObject.SetActive(false);
         currentHoldObject = null;
     }
 }

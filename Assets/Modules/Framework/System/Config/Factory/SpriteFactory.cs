@@ -14,12 +14,6 @@ namespace Framework
                 Instance.ToString();
             }
         }
-        [SerializeField] private Sprite[] fish; public static Sprite[] Fish { get { return Instance.fish; } }
-    }
-
-    [System.Serializable]
-    public class ListSprite
-    {
-        public Sprite[] sprites;
+        [SerializeField] private List<FishingData.Item> items; public static List<FishingData.Item> Items { get { return Instance.items; } }
     }
 }

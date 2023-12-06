@@ -46,7 +46,7 @@ namespace Framework
 
                         SetActive(item, true);
                         if (root == null) root = _root;
-                        item.transform.parent = root;
+                        item.transform.SetParent(root);
                         return item.GetComponent<T>();
                     }
                 }

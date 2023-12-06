@@ -24,6 +24,7 @@ namespace Framework
 
         [SerializeField] private GameObject winPanel; public static GameObject WinPanel { get { return Instance.winPanel; } }
         [SerializeField] private GameObject losePanel; public static GameObject LosePanel { get { return Instance.losePanel; } }
+        [SerializeField] private GameObject itemFly; public static GameObject ItemFly { get { return Instance.itemFly; } }
 
 
     }

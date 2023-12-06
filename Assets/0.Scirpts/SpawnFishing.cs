@@ -47,15 +47,16 @@ public class SpawnFishing : MonoBehaviour
     {
         while (true) 
         {
+            Debug.Log("Spawn");
             Vector2 positon = GetRandomPosition();
             MovingObject fishObj = ObjectPoolManager.SpawnObject<MovingObject>(prefabFish.GetRandom(), positon, transformParent);
+
             fishObj.GetComponent<SpriteRenderer>().sortingOrder = 0;
             fishObj.transform.rotation = Quaternion.Euler(0, 0, 90);
-            if (positon.x < 0)
-            {
-                fishObj.isMovingRight = true;
-                fishObj.transform.rotation = Quaternion.Euler(0, 0, -90);
-            }
+            fishObj.isMovingRight = positon.x < 0 ? true : false;
+            fishObj.transform.rotation = Quaternion.Euler(0, 0, positon.x < 0 ? -90 : 90);
+            fishObj.gameObject.SetActive(true);
+
             yield return new WaitForSeconds(duration);
         }
     }

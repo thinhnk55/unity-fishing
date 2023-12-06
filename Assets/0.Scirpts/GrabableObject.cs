@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class GrabableObject : MonoBehaviour, ICatchable
+public abstract class GrabableObject : MonoBehaviour, IGrabable
 {
     private Hook attachedHook;
 
     public float Mass;
     public bool attachable;
-    private void OnEnable()
+
+    protected virtual void OnEnable()
     {
         attachable = true;
     }
