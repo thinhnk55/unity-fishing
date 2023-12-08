@@ -15,6 +15,7 @@ public class Fishing : GrabableObject
     private float timer;
 
     [Header("Anim Fly To Target")]
+    [SerializeField] RectTransform root;
     [SerializeField] Transform target;
     [SerializeField] float timeFly;
     [SerializeField] float timeZoomOut;
@@ -35,7 +36,7 @@ public class Fishing : GrabableObject
         {
             
         }
-        target = ItemCollection.Instance.items[0].transform;
+        target = ItemCollection.Instance.items[2].transform;
         this.gameObject.SetActive(false);
         collector.RemoveObject();
         FlyToTarget();
@@ -54,10 +55,10 @@ public class Fishing : GrabableObject
     [SerializeField] Ease easeType;
     private void FlyToTarget()
     {
-        Image itemFly = ObjectPoolManager.SpawnObject<Image>(PrefabFactory.ItemFly, this.transform.position, target.parent.transform, true);
+        Image itemFly = ObjectPoolManager.SpawnObject<Image>(PrefabFactory.ItemFly, this.transform.position, target, true);
         itemFly.rectTransform.localScale = Vector3.one;
 
-        itemFly.rectTransform.DOMove(target.position, timeFly).SetEase(easeType).OnComplete(() =>
+        itemFly.rectTransform.DOAnchorPos(new Vector2(0, 0), timeFly).SetEase(easeType).OnComplete(() =>
         {
             itemFly.rectTransform.DOScale(0, timeZoomOut).OnComplete(() =>
             {

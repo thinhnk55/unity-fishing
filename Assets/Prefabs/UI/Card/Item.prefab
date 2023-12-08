@@ -85,6 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9158003189257513619}
   - component: {fileID: -5257285832352278160}
+  - component: {fileID: 8568383628196415803}
   m_Layer: 5
   m_Name: Item
   m_TagString: Untagged
@@ -125,10 +126,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b83bc7570aed294998bd4bf0c0f9383, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rect: {fileID: 0}
   img: {fileID: 6445763984126010828}
   timeScale: 0.75
   scaleDefault: 1
   scaleTo: 1.3
+--- !u!222 &8568383628196415803
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6582295247313004956}
+  m_CullTransparentMesh: 1
 --- !u!1 &7206053092750860641
 GameObject:
   m_ObjectHideFlags: 0

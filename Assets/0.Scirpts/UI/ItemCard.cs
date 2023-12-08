@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class ItemCard : MonoBehaviour
 {
+    [SerializeField] RectTransform rect;
     [SerializeField] Image img;
 
     [Header("Anim Scale")]
