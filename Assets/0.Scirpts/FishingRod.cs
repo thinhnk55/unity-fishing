@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Digger : MonoBehaviour
+public class FishingRod : MonoBehaviour
 {
     private const int MAXHOOKANGLE = 70;
 
@@ -11,9 +11,6 @@ public class Digger : MonoBehaviour
     [SerializeField] float digSpeed;
     [SerializeField] float pullSpeed;
     [SerializeField] float swingSpeed;
-    //[SerializeField] Dynamite dynamitePrefab;
-    [SerializeField] Transform aimPoint;
-    [SerializeField] LayerMask aimLayerMask;
 
     [SerializeField] DiggerState state = DiggerState.SWINGING;
     bool swingingLeft = true;
@@ -28,12 +25,15 @@ public class Digger : MonoBehaviour
     private void Start()
     {
         hookInitialY = hook.transform.localPosition.y;
-        defaultMaxPullSpeed = PullSpeed;
-        dynamitesLeft = 2;
     }
 
     private void Update()
     {
+        if(Input.GetMouseButtonUp(0))
+        {
+            Debug.Log("Up");
+        }
+
         if (state == DiggerState.SWINGING)
         {
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
@@ -54,7 +54,7 @@ public class Digger : MonoBehaviour
     {
         if (state == DiggerState.DIGGING)
         {
-            hook.transform.Translate(Vector2.down * digSpeed * Time.fixedDeltaTime);
+            hook?.transform.Translate(Vector2.down * digSpeed * Time.fixedDeltaTime);
         }
         else if (state == DiggerState.PULLING)
         {

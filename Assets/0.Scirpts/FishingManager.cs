@@ -18,6 +18,9 @@ public class FishingManager : MonoBehaviour
 {
     public static FishingManager instance;
 
+    public float halfHeightOfCamera;
+    public float halfWidthOfCamera;
+
     private bool isGameOver;
     public bool IsGameOver
     {
@@ -37,6 +40,22 @@ public class FishingManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
+        // Get the main camera
+        Camera mainCamera = Camera.main;
+        // Check if the main camera is not null
+        if (mainCamera != null)
+        {
+            halfHeightOfCamera = mainCamera.orthographicSize;
+            halfWidthOfCamera = halfHeightOfCamera * mainCamera.aspect;
+
+            // Print the size of the camera
+            Debug.Log($"Camera Size: {halfHeightOfCamera} x {halfWidthOfCamera}");
+        }
+        else
+        {
+            Debug.LogError("Main camera not found.");
+        }
     }
 
     // Start is called before the first frame update

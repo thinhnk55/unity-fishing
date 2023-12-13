@@ -6,11 +6,14 @@ using UnityEngine;
 
 public class Hook : MonoBehaviour
 {
-    [SerializeField] Digger digger;
-    //[SerializeField] QuickEffectAnimController valueTextItem;
-    [SerializeField] TextMeshPro valueText;
-
+    [SerializeField] GameObject headLine;
+    [SerializeField] FishingRod digger;
     [SerializeField] GrabableObject currentHoldObject;
+
+    private void Update()
+    {
+        this.transform.position = new Vector3(headLine.transform.position.x, this.transform.position.y, this.transform.position.z);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
