@@ -3,15 +3,19 @@ using UnityEngine.UI;
 
 public class Rod : MonoBehaviour
 {
-    [SerializeField] Vector2 lineSizeInit;
     [SerializeField] Image RodImg;
     [SerializeField] Hook hook;
     [SerializeField] LineRenderer line;
     [SerializeField] DiggerState diggerState = DiggerState.SWINGING;
+    [SerializeField] float hookInitYPos;
+
+    [Header("Speed Rod")]
+    [SerializeField] float pullSpeed;
+    [SerializeField] float digSpeed;
     // Start is called before the first frame update
     void Start()
     {
-         //RodImg.rectTransform.sizeDelta = new Vector2(lineSizeInit.x, lineSizeInit.y);
+        hookInitYPos = hook.transform.position.y;
     }
 
     // Update is called once per frame
@@ -22,18 +26,51 @@ public class Rod : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
-                Debug.Log("Swing");
                 RodImg.rectTransform.rotation = Quaternion.Euler(0, 0, GetRotation(Camera.main.ScreenToWorldPoint(Input.mousePosition).x));
             }
             else if (Input.GetMouseButtonUp(0)) 
             {
-                Debug.Log("Dig");
-               // diggerState = DiggerState.DIGGING;
+                diggerState = DiggerState.DIGGING;
             }
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (diggerState == DiggerState.DIGGING)
+        {
+            hook?.transform.Translate(new Vector2(0, -1 * digSpeed * Time.fixedDeltaTime));
+        }
+        else if (diggerState == DiggerState.PULLING)
+        {
+            hook.transform.Translate(new Vector3(0, 1 * pullSpeed * Time.fixedDeltaTime));
+            if (hook.transform.position.y >= hookInitYPos)
+            {
+                hook.CollectObject();
+                StartSwinging();
+            }
+        }
+        else if (diggerState == DiggerState.SWINGING)
+        {
+            //Swing();
+        }
+    }
 
+    public void StartDigging()
+    {
+        diggerState = DiggerState.DIGGING;
+    }
+
+    public void StartPulling()
+    {
+        diggerState = DiggerState.PULLING;
+    }
+
+    public void StartSwinging()
+    {
+        diggerState = DiggerState.SWINGING;
+        hook.transform.position = new Vector3(hook.transform.position.x, hookInitYPos, hook.transform.position.z);
+    }
 
 
     private float GetRotation(float posX)
@@ -42,6 +79,7 @@ public class Rod : MonoBehaviour
         float rotation = 90f * -aspect;
         return rotation;
     }
+
 }
 
 enum DiggerState

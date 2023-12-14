@@ -6,7 +6,6 @@ public abstract class GrabableObject : MonoBehaviour, IGrabable
 {
     private Hook attachedHook;
 
-    public float Mass;
     public bool attachable;
 
     protected virtual void OnEnable()
@@ -22,7 +21,6 @@ public abstract class GrabableObject : MonoBehaviour, IGrabable
             transform.SetParent(hook.transform);
             transform.localPosition = Vector2.zero;
             transform.localEulerAngles = Vector3.zero;
-            attachable = false; GetComponent<SpriteRenderer>().sortingOrder = 12;
             var moveObj = GetComponent<MovingObject>();
             var anim = GetComponent<Anim>();
 

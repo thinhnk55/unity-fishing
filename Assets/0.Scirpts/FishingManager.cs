@@ -73,7 +73,7 @@ public class FishingManager : MonoBehaviour
     public void SetTargetRequire(TypeFishing typeFishing)
     {
         TypeFishingRequire = typeFishing;
-        OnChangeTargetRequire(mappingSpriteRequire[TypeFishingRequire]);
+        //OnChangeTargetRequire(mappingSpriteRequire[TypeFishingRequire]);
     }
 
     public void AddScore(int value)
@@ -147,6 +147,8 @@ public class FishingManager : MonoBehaviour
 
         return randomElement;
     }
+
+    public Action StartFishing;
     public Action<int> OnChangeScore;
     public Action<Sprite> OnChangeTargetRequire;
     public Action<bool> OnGameOver;

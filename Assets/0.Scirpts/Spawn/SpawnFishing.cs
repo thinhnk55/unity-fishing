@@ -3,17 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpawnFishing : MonoBehaviour
 {
-    [SerializeField] List<GameObject> prefabFish;
+    [SerializeField] GameObject prefabFish;
     [SerializeField] Transform transformParent;
-    float halfHeightOfCamera;
-    float halfWidthOfCamera;
+
+    [SerializeField] float posYMax;
+    [SerializeField] float posYMin;
     [SerializeField] float offsetHorizontal;
-    [SerializeField] float offsetBottom;
     [SerializeField] float duration;
 
+    [Header("Paramater Camera")]
+    public static float halfHeightOfCamera;
+    public static float halfWidthOfCamera;
     void Start()
     {
         FishingManager.instance.OnGameOver += OnGameOver;
@@ -47,15 +51,12 @@ public class SpawnFishing : MonoBehaviour
     {
         while (true) 
         {
-            Debug.Log("Spawn");
             Vector2 positon = GetRandomPosition();
-            MovingObject fishObj = ObjectPoolManager.SpawnObject<MovingObject>(prefabFish.GetRandom(), positon, transformParent);
+            MovingObject itemObj = ObjectPoolManager.SpawnObject<MovingObject>(prefabFish, positon, transformParent);
 
-            fishObj.GetComponent<SpriteRenderer>().sortingOrder = 0;
-            fishObj.transform.rotation = Quaternion.Euler(0, 0, 90);
-            fishObj.isMovingRight = positon.x < 0 ? true : false;
-            fishObj.transform.rotation = Quaternion.Euler(0, 0, positon.x < 0 ? -90 : 90);
-            fishObj.gameObject.SetActive(true);
+            itemObj.isMovingRight = positon.x < 0 ? true : false;
+            itemObj.transform.rotation = Quaternion.Euler(0, positon.x < 0 ? 180 : 0, 0);
+            itemObj.gameObject.SetActive(true);
 
             yield return new WaitForSeconds(duration);
         }
@@ -71,7 +72,7 @@ public class SpawnFishing : MonoBehaviour
         Vector2 position = Vector2.zero;
         bool isLeft = Random.Range(0, 2) == 0 ? true : false;
 
-        position.y = Random.Range(this.transform.position.y, -halfHeightOfCamera + offsetBottom);
+        position.y = Random.Range(this.transform.position.y, -halfHeightOfCamera);
         if(isLeft )
         {
             position.x = -halfWidthOfCamera - offsetHorizontal;

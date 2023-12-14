@@ -1,9 +1,12 @@
 using DG.Tweening;
 using Framework;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Fishing : GrabableObject
+public class Item : GrabableObject
 {
     public TypeFishing TypeFishing;
     [SerializeField] float timeCountDownEnable;
@@ -24,23 +27,23 @@ public class Fishing : GrabableObject
 
     public override void OnCollectObject(Hook collector)
     {
-        if (!FishingManager.instance.CheckMatch(TypeFishing))
-        {
-        }
-        else
-        {
-            
-        }
-        target = ItemCollection.Instance.items[2].transform;
+        //if (!FishingManager.instance.CheckMatch(TypeFishing))
+        //{
+        //}
+        //else
+        //{
+
+        //}
+        //target = ItemCollection.Instance.items[2].transform;
         this.gameObject.SetActive(false);
         collector.RemoveObject();
-        FlyToTarget();
+        //FlyToTarget();
     }
 
     private void Update()
     {
-        timer -= Time.deltaTime;   
-        if(timer < 0)
+        timer -= Time.deltaTime;
+        if (timer < 0)
         {
             this.gameObject.SetActive(false);
         }

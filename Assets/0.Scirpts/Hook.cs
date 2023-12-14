@@ -7,7 +7,7 @@ using UnityEngine;
 public class Hook : MonoBehaviour
 {
     [SerializeField] GameObject headLine;
-    [SerializeField] FishingRod digger;
+    [SerializeField] Rod rod;
     [SerializeField] GrabableObject currentHoldObject;
 
     private void Update()
@@ -31,7 +31,7 @@ public class Hook : MonoBehaviour
     public void AttachObject(GrabableObject obj)
     {
         currentHoldObject = obj;
-        digger.SetPullSpeedBasedOnObjectMass(obj.Mass);
+        //rod.SetPullSpeedBasedOnObjectMass(obj.Mass);
         Pull();
     }
 
@@ -48,14 +48,14 @@ public class Hook : MonoBehaviour
 
     public void Pull()
     {
-        digger.StartPulling();
+        rod.StartPulling();
     }
 
     public void RemoveObject(bool despawnObj = true)
     {
         if (currentHoldObject == null) return;
 
-        digger.SetPullSpeedBasedOnObjectMass(1);
+        //rod.SetPullSpeedBasedOnObjectMass(1);
         //if (despawnObj) currentHoldObject.gameObject.SetActive(false);
         currentHoldObject = null;
     }
