@@ -25,7 +25,7 @@ public class ItemCollection : SingletonMono<ItemCollection>
         }
 
         blurryScreen.gameObject.SetActive(false);
-
+        FishingManager.instance.StartFishing();
         yield return null;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +7,7 @@ public class Rod : MonoBehaviour
     [SerializeField] Image RodImg;
     [SerializeField] Hook hook;
     [SerializeField] LineRenderer line;
-    [SerializeField] DiggerState diggerState = DiggerState.SWINGING;
+    [SerializeField] DiggerState diggerState;
     [SerializeField] float hookInitYPos;
 
     [Header("Speed Rod")]
@@ -15,7 +16,18 @@ public class Rod : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FishingManager.instance.StartFishing += OnStartFishing;
         hookInitYPos = hook.transform.position.y;
+    }
+
+    private void OnDestroy()
+    {
+        FishingManager.instance.StartFishing -= OnStartFishing;
+    }
+
+    private void OnStartFishing()
+    {
+        diggerState = DiggerState.SWINGING;
     }
 
     // Update is called once per frame
@@ -31,6 +43,7 @@ public class Rod : MonoBehaviour
             else if (Input.GetMouseButtonUp(0)) 
             {
                 diggerState = DiggerState.DIGGING;
+
             }
         }
     }
