@@ -5,9 +5,11 @@ using UnityEngine;
 public class SpawnItem : MonoBehaviour
 {
     [SerializeField] GameObject prefabItem;
+
     [SerializeField] Transform transformParent;
+    [SerializeField] float posYMax;
+    [SerializeField] float posYMin;
     [SerializeField] float offsetHorizontal;
-    [SerializeField] float offsetBottom;
     [SerializeField] float duration;
 
     void Start()
@@ -48,7 +50,7 @@ public class SpawnItem : MonoBehaviour
         Vector2 position = Vector2.zero;
         bool isLeft = Random.Range(0, 2) == 0 ? true : false;
 
-        position.y = Random.Range(this.transform.position.y, -SpawnFishing.halfHeightOfCamera + offsetBottom);
+        position.y = Random.Range(posYMax, posYMin);
         if (isLeft)
         {
             position.x = -SpawnFishing.halfWidthOfCamera - offsetHorizontal;

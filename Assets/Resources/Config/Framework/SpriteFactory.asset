@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2633c311359dae4b9e0b9da2d1e4818, type: 3}
   m_Name: SpriteFactory
   m_EditorClassIdentifier: 
+  items:
+  - Id: 0
+    Sprite: {fileID: 0}
+    Sound: {fileID: 0}
+    Word: 

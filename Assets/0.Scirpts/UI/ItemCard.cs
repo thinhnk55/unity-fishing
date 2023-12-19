@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class ItemCard : MonoBehaviour
 {
-    [SerializeField] RectTransform rect;
+    public RectTransform rect;
     [SerializeField] Image imgBG;
     [SerializeField] int index;
 
@@ -21,13 +21,13 @@ public class ItemCard : MonoBehaviour
     public float TimeSpeech { get { return timeSpeech; } }
 
     [Header("Sprite")]
-    [SerializeField] Sprite nomarl;
-    [SerializeField] Sprite Correct;
-    [SerializeField] Sprite Picked;
+    [SerializeField] Sprite nomarlSprite;
+    [SerializeField] Sprite correctSprite;
+    [SerializeField] Sprite pickedSprite;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     private void PlaySound()
@@ -37,25 +37,54 @@ public class ItemCard : MonoBehaviour
 
     public void PlayAnimPlaySound()
     {
-        imgBG.sprite = Picked;
-        transform.DOScale(scaleTo, timeSpeech/2)
+        imgBG.sprite = pickedSprite;
+        transform.DOScale(scaleTo, timeSpeech / 2)
         .OnComplete(() =>
         {
             PlaySound();
-            transform.DOScale(scaleDefault, timeSpeech/2)
+            transform.DOScale(scaleDefault, timeSpeech / 2)
             .OnComplete(() =>
             {
-                imgBG.sprite = nomarl;
+                imgBG.sprite = nomarlSprite;
             });
         });
     }
 
     public void ScaleToOne()
     {
+        imgBG.sprite = nomarlSprite;
         transform.DOScale(scaleDefault, timeScaleToOne)
         .OnComplete(() =>
         {
             PlayAnimPlaySound();
         });
+    }
+
+    public void ScaleToZero()
+    {
+        transform.DOScale(0, timeScaleToOne)
+        .OnComplete(() =>
+        {
+            ScaleToOne();
+        });
+    }
+
+    public void PlayEffectWin()
+    {
+        ItemCollection.Instance.blurryScreen.gameObject.SetActive(true);
+        imgBG.sprite = correctSprite;
+        transform.SetAsLastSibling();
+    }
+
+    public void SetDefault()
+    {
+        ItemCollection.Instance.blurryScreen.gameObject.SetActive(false);
+        imgBG.sprite = nomarlSprite;
+        transform.SetSiblingIndex(index);
+    }
+
+    public void ChangeRequireItem()
+    {
+        PlaySound();
     }
 }

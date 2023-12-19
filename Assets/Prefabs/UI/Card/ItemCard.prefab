@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 8568383628196415803}
   - component: {fileID: 4660913381201114838}
   m_Layer: 5
-  m_Name: Item
+  m_Name: ItemCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,13 +130,13 @@ MonoBehaviour:
   rect: {fileID: 9158003189257513619}
   imgBG: {fileID: 4274568574150998305}
   index: 0
-  timeScaleToOne: 2
-  timeSpeech: 2
+  timeScaleToOne: 0.75
+  timeSpeech: 1
   scaleDefault: 1
   scaleTo: 1.1
-  nomarl: {fileID: 21300000, guid: 07efe8a0f54a626499053000d1172b08, type: 3}
-  Correct: {fileID: 21300000, guid: 2e1335b2196e0a94db9f7135b1651b71, type: 3}
-  Picked: {fileID: 21300000, guid: d092423f72ca98049b505fc29e8dd1d5, type: 3}
+  nomarlSprite: {fileID: 21300000, guid: 07efe8a0f54a626499053000d1172b08, type: 3}
+  correctSprite: {fileID: 21300000, guid: 2e1335b2196e0a94db9f7135b1651b71, type: 3}
+  pickedSprite: {fileID: 21300000, guid: d092423f72ca98049b505fc29e8dd1d5, type: 3}
 --- !u!222 &8568383628196415803
 CanvasRenderer:
   m_ObjectHideFlags: 0

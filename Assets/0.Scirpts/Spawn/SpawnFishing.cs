@@ -72,7 +72,7 @@ public class SpawnFishing : MonoBehaviour
         Vector2 position = Vector2.zero;
         bool isLeft = Random.Range(0, 2) == 0 ? true : false;
 
-        position.y = Random.Range(this.transform.position.y, -halfHeightOfCamera);
+        position.y = Random.Range(posYMax, posYMin);
         if(isLeft )
         {
             position.x = -halfWidthOfCamera - offsetHorizontal;

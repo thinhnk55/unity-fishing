@@ -42,7 +42,7 @@ public class Rod : MonoBehaviour
             }
             else if (Input.GetMouseButtonUp(0)) 
             {
-                diggerState = DiggerState.DIGGING;
+                StartDigging();
 
             }
         }
@@ -71,11 +71,13 @@ public class Rod : MonoBehaviour
 
     public void StartDigging()
     {
+        hook.canCatch = true;
         diggerState = DiggerState.DIGGING;
     }
 
     public void StartPulling()
     {
+        hook.canCatch = false;
         diggerState = DiggerState.PULLING;
     }
 

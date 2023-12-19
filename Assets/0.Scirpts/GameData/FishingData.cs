@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Framework;
+using System;
 
 public class FishingData : PDataBlock<FishingData>
 {
@@ -16,7 +17,7 @@ public class FishingData : PDataBlock<FishingData>
 
     }
 
-    [SerializeField]
+    [Serializable]
     public class Item
     {
         public int Id;

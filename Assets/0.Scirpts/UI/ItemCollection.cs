@@ -7,7 +7,7 @@ public class ItemCollection : SingletonMono<ItemCollection>
     public List<ItemCard> items = new List<ItemCard>();
     [SerializeField] ItemCard itemPrefab;
     [SerializeField] Transform itemsRoot;
-    [SerializeField] Transform blurryScreen;
+    public Transform blurryScreen;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +16,8 @@ public class ItemCollection : SingletonMono<ItemCollection>
 
     private IEnumerator InitItem()
     {
-        for(int i=0; i<items.Count;  i++)
+        blurryScreen.gameObject.SetActive(true);
+        for (int i=0; i<items.Count;  i++)
         {
             transform.GetChild(i).SetAsLastSibling();
             items[i].ScaleToOne();

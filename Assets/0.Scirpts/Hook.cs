@@ -9,6 +9,7 @@ public class Hook : MonoBehaviour
     [SerializeField] GameObject headLine;
     [SerializeField] Rod rod;
     [SerializeField] GrabableObject currentHoldObject;
+    public bool canCatch;
 
     private void Update()
     {
@@ -19,6 +20,7 @@ public class Hook : MonoBehaviour
     {
         if (collision.CompareTag("DigableObject"))
         {
+            if (canCatch == false) return;
             if (currentHoldObject != null) return;
             collision.GetComponent<IGrabable>().OnHookInteracted(this);
         }
