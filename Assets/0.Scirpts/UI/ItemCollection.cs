@@ -21,12 +21,11 @@ public class ItemCollection : SingletonMono<ItemCollection>
         {
             transform.GetChild(i).SetAsLastSibling();
             items[i].ScaleToOne();
-            yield return new WaitForSeconds(items[i].TimeScaleToOne + items[i].TimeSpeech);
-            transform.GetChild(transform.childCount-1).SetSiblingIndex(i);
+            yield return new WaitForSeconds(items[i].TimeScaleToOne + items[i].TimeSpeech + 0.1f);
         }
 
         blurryScreen.gameObject.SetActive(false);
-        FishingManager.instance.StartFishing();
+        FishingManager.Instance.OnStartFishing();
         yield return null;
     }
 }

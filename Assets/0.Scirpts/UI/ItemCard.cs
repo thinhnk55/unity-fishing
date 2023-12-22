@@ -11,6 +11,8 @@ public class ItemCard : MonoBehaviour
     public RectTransform rect;
     [SerializeField] Image imgBG;
     [SerializeField] int index;
+    [SerializeField] bool isShowedHint;
+    public bool IsShowedHint => isShowedHint;
 
     [Header("Anim Scale")]
     [SerializeField] float timeScaleToOne;
@@ -45,7 +47,7 @@ public class ItemCard : MonoBehaviour
             transform.DOScale(scaleDefault, timeSpeech / 2)
             .OnComplete(() =>
             {
-                imgBG.sprite = nomarlSprite;
+                SetDefault();
             });
         });
     }
@@ -78,7 +80,6 @@ public class ItemCard : MonoBehaviour
 
     public void SetDefault()
     {
-        ItemCollection.Instance.blurryScreen.gameObject.SetActive(false);
         imgBG.sprite = nomarlSprite;
         transform.SetSiblingIndex(index);
     }

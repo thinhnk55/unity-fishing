@@ -8,14 +8,14 @@ public class FishingUI : MonoBehaviour
     [SerializeField] Image requireTarget;
     void Awake()
     {
-        FishingManager.instance.OnChangeScore += OnChangeScore;
-        FishingManager.instance.OnChangeTargetRequire += OnChangeTargetRequire;
+        FishingManager.Instance.OnChangeScore += OnChangeScore;
+        FishingManager.Instance.OnChangeTargetRequire += OnChangeTargetRequire;
     }
 
     private void OnDestroy()
     {
-        FishingManager.instance.OnChangeScore -= OnChangeScore;
-        FishingManager.instance.OnChangeTargetRequire -= OnChangeTargetRequire;
+        FishingManager.Instance.OnChangeScore -= OnChangeScore;
+        FishingManager.Instance.OnChangeTargetRequire -= OnChangeTargetRequire;
     }
 
     private void OnChangeScore(int score)

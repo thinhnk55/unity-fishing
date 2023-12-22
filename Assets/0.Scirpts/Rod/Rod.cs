@@ -1,9 +1,11 @@
+using Framework;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Rod : MonoBehaviour
 {
+    [SerializeField] RectTransform canvas;
     [SerializeField] Image RodImg;
     [SerializeField] Hook hook;
     [SerializeField] LineRenderer line;
@@ -16,18 +18,31 @@ public class Rod : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FishingManager.instance.StartFishing += OnStartFishing;
+        SetHeightSizeOfRod(canvas.rect.width/2);
         hookInitYPos = hook.transform.position.y;
+        FishingManager.Instance.OnStartFishing += OnStartFishing;
+        FishingManager.Instance.OnStopFishing += OnStopFishing;
     }
 
     private void OnDestroy()
     {
-        FishingManager.instance.StartFishing -= OnStartFishing;
+        FishingManager.Instance.OnStartFishing -= OnStartFishing;
+        FishingManager.Instance.OnStopFishing -= OnStopFishing;
+    }
+
+    private void SetHeightSizeOfRod(float height)
+    {
+        RodImg.rectTransform.SetHeight(height);
     }
 
     private void OnStartFishing()
     {
         diggerState = DiggerState.SWINGING;
+    }
+
+    private void OnStopFishing()
+    {
+        diggerState = DiggerState.NONE;
     }
 
     // Update is called once per frame
@@ -36,11 +51,12 @@ public class Rod : MonoBehaviour
 
         if (diggerState == DiggerState.SWINGING)
         {
-            if (Input.GetMouseButton(0))
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            if (Input.GetMouseButton(0) && mousePos.y < 0)
             {
                 RodImg.rectTransform.rotation = Quaternion.Euler(0, 0, GetRotation(Camera.main.ScreenToWorldPoint(Input.mousePosition).x));
             }
-            else if (Input.GetMouseButtonUp(0)) 
+            else if (Input.GetMouseButtonUp(0) && mousePos.y < 0) 
             {
                 StartDigging();
 
@@ -59,13 +75,9 @@ public class Rod : MonoBehaviour
             hook.transform.Translate(new Vector3(0, 1 * pullSpeed * Time.fixedDeltaTime));
             if (hook.transform.position.y >= hookInitYPos)
             {
-                hook.CollectObject();
                 StartSwinging();
+                hook.CollectObject();
             }
-        }
-        else if (diggerState == DiggerState.SWINGING)
-        {
-            //Swing();
         }
     }
 
@@ -90,7 +102,7 @@ public class Rod : MonoBehaviour
 
     private float GetRotation(float posX)
     {
-        float aspect = posX / FishingManager.instance.halfWidthOfCamera;
+        float aspect = posX / FishingManager.Instance.halfWidthOfCamera;
         float rotation = 90f * -aspect;
         return rotation;
     }

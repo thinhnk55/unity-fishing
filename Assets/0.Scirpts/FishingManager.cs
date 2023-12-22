@@ -14,13 +14,8 @@ public enum TypeFishing
     CaHong = 2,
 }
 
-public class FishingManager : MonoBehaviour
+public class FishingManager : HardSingletonMono<FishingManager>
 {
-    public static FishingManager instance;
-
-    public float halfHeightOfCamera;
-    public float halfWidthOfCamera;
-
     private bool isGameOver;
     public bool IsGameOver
     {
@@ -37,20 +32,17 @@ public class FishingManager : MonoBehaviour
     [SerializeField] Sprite[] imageFish;
     public TypeFishing TypeFishingRequire { get; private set; }
 
-    private void Awake()
+    [Header("Paramater Camera")]
+    public float halfHeightOfCamera;
+    public float halfWidthOfCamera;
+    protected override void Awake()
     {
-        instance = this;
-
-        // Get the main camera
+        base.Awake();
         Camera mainCamera = Camera.main;
-        // Check if the main camera is not null
         if (mainCamera != null)
         {
             halfHeightOfCamera = mainCamera.orthographicSize;
             halfWidthOfCamera = halfHeightOfCamera * mainCamera.aspect;
-
-            // Print the size of the camera
-            Debug.Log($"Camera Size: {halfHeightOfCamera} x {halfWidthOfCamera}");
         }
         else
         {
@@ -148,7 +140,8 @@ public class FishingManager : MonoBehaviour
         return randomElement;
     }
 
-    public Action StartFishing;
+    public Action OnStartFishing;
+    public Action OnStopFishing;
     public Action<int> OnChangeScore;
     public Action<Sprite> OnChangeTargetRequire;
     public Action<bool> OnGameOver;

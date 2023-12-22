@@ -14,36 +14,16 @@ public class SpawnFishing : MonoBehaviour
     [SerializeField] float posYMin;
     [SerializeField] float offsetHorizontal;
     [SerializeField] float duration;
-
-    [Header("Paramater Camera")]
-    public static float halfHeightOfCamera;
-    public static float halfWidthOfCamera;
     void Start()
     {
-        FishingManager.instance.OnGameOver += OnGameOver;
-
-        // Get the main camera
-        Camera mainCamera = Camera.main;
-        // Check if the main camera is not null
-        if (mainCamera != null)
-        {
-            halfHeightOfCamera = mainCamera.orthographicSize;
-            halfWidthOfCamera = halfHeightOfCamera * mainCamera.aspect;
-
-            // Print the size of the camera
-            Debug.Log($"Camera Size: {halfHeightOfCamera} x {halfWidthOfCamera}");
-        }
-        else
-        {
-            Debug.LogError("Main camera not found.");
-        }
+        FishingManager.Instance.OnGameOver += OnGameOver;
 
         spawnFish = StartCoroutine(SpawnFish());
     }
 
     private void OnDestroy() 
     {
-        FishingManager.instance.OnGameOver -= OnGameOver;
+        FishingManager.Instance.OnGameOver -= OnGameOver;
     }
 
     Coroutine spawnFish;
@@ -75,11 +55,11 @@ public class SpawnFishing : MonoBehaviour
         position.y = Random.Range(posYMax, posYMin);
         if(isLeft )
         {
-            position.x = -halfWidthOfCamera - offsetHorizontal;
+            position.x = -FishingManager.Instance.halfWidthOfCamera - offsetHorizontal;
         }
         else
         {
-            position.x = halfWidthOfCamera + offsetHorizontal;
+            position.x = FishingManager.Instance.halfWidthOfCamera + offsetHorizontal;
         }
 
         return position;

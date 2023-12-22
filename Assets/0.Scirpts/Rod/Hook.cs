@@ -14,6 +14,10 @@ public class Hook : MonoBehaviour
     private void Update()
     {
         this.transform.position = new Vector3(headLine.transform.position.x, this.transform.position.y, this.transform.position.z);
+        if(this.transform.position.y < -FishingManager.Instance.halfHeightOfCamera)
+        {
+            Pull();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -24,10 +28,10 @@ public class Hook : MonoBehaviour
             if (currentHoldObject != null) return;
             collision.GetComponent<IGrabable>().OnHookInteracted(this);
         }
-        else if (collision.CompareTag("Wall"))
-        {
-            Pull();
-        }
+        //else if (collision.CompareTag("Wall"))
+        //{
+        //    Pull();
+        //}
     }
 
     public void AttachObject(GrabableObject obj)

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,10 +15,24 @@ public class Fish : GrabableObject
         timer = timeCountDownEnable;
     }
 
+    public override void OnHookInteracted(Hook hook)
+    {
+        base.OnHookInteracted(hook);
+        if (attachable)
+        {
+            transform.localEulerAngles = new Vector3(0, 0, -90);
+        }
+    }
+
     public override void OnCollectObject(Hook collector)
     {
-        this.gameObject.SetActive(false);
-        collector.RemoveObject(this);
+        FishingManager.Instance.OnStopFishing();
+        DOVirtual.DelayedCall(0.5f, () =>
+        {
+            this.gameObject.SetActive(false);
+            collector.RemoveObject(this);
+            FishingManager.Instance.OnStartFishing();
+        });
     }
 
     private void Update()

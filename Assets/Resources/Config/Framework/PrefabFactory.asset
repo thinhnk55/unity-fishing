@@ -16,4 +16,4 @@ MonoBehaviour:
   audioSourcePrefab: {fileID: 0}
   winPanel: {fileID: 2055890587361386808, guid: fd8d597025659c342823fa040c764e89, type: 3}
   losePanel: {fileID: 3944466869300572501, guid: c5f450faf318fa7409204d2f2c103490, type: 3}
-  itemFly: {fileID: 4761922120606106059, guid: c9787fd9784b80a41a6af1e56ad657d2, type: 3}
+  itemFly: {fileID: 1911532462820756454, guid: c9787fd9784b80a41a6af1e56ad657d2, type: 3}

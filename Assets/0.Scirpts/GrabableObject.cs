@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class GrabableObject : MonoBehaviour, IGrabable
 {
-    private Hook attachedHook;
+    protected Hook attachedHook;
 
     public bool attachable;
 
@@ -13,7 +13,7 @@ public abstract class GrabableObject : MonoBehaviour, IGrabable
         attachable = true;
     }
 
-    public void OnHookInteracted(Hook hook)
+    public virtual void OnHookInteracted(Hook hook)
     {
         if (attachable)
         {

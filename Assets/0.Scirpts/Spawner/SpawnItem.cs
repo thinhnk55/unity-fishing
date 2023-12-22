@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnItem : MonoBehaviour
@@ -14,14 +14,22 @@ public class SpawnItem : MonoBehaviour
 
     void Start()
     {
-        FishingManager.instance.OnGameOver += OnGameOver;
+        FishingManager.Instance.OnGameOver += OnGameOver;
 
         spawnItem = StartCoroutine(SpawnItemCoroutine());
     }
 
     private void OnDestroy()
     {
-        FishingManager.instance.OnGameOver -= OnGameOver;
+        try
+        {
+            FishingManager.Instance.OnGameOver -= OnGameOver;
+        }
+        catch(System.Exception exeption)
+        {
+            Debug.Log(exeption.ToString());
+        }
+
     }
 
     Coroutine spawnItem;
@@ -48,16 +56,16 @@ public class SpawnItem : MonoBehaviour
     private Vector2 GetRandomPosition()
     {
         Vector2 position = Vector2.zero;
-        bool isLeft = Random.Range(0, 2) == 0 ? true : false;
+        bool isLeft = UnityEngine.Random.Range(0, 2) == 0 ? true : false;
 
-        position.y = Random.Range(posYMax, posYMin);
+        position.y = UnityEngine.Random.Range(posYMax, posYMin);
         if (isLeft)
         {
-            position.x = -SpawnFishing.halfWidthOfCamera - offsetHorizontal;
+            position.x = -FishingManager.Instance.halfWidthOfCamera - offsetHorizontal;
         }
         else
         {
-            position.x = SpawnFishing.halfWidthOfCamera + offsetHorizontal;
+            position.x = FishingManager.Instance.halfWidthOfCamera + offsetHorizontal;
         }
 
         return position;
