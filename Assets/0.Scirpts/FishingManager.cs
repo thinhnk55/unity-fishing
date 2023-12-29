@@ -49,7 +49,7 @@ public class FishingManager : SingletonMono<FishingManager>
     {
         Score += value;
         if (Score < 0) Score = 0;
-        OnChangeScore(Score);
+        OnChangeScore(value);
     }
 
     public int CheckMatch(int idItem)
