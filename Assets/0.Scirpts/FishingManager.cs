@@ -4,15 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
-
-[SerializeField]
-public enum TypeFishing
-{
-    CaHe = 0,
-    CaDuoi = 1,
-    CaHong = 2,
-}
 
 public class FishingManager : SingletonMono<FishingManager>
 {
@@ -28,7 +19,7 @@ public class FishingManager : SingletonMono<FishingManager>
 
     public int Score = 5;
     [SerializeField] int itemCorrectNumber;
-    public List<int> itemsCorrect;
+    public List<int> itemsCorrect; // 3 items dau tien la item dung, con lai la sai
 
     [Header("Paramater Camera")]
     public float halfHeightOfCamera;
@@ -52,17 +43,6 @@ public class FishingManager : SingletonMono<FishingManager>
     void Start()
     {
         SetItemsCorrect();
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        Debug.LogError("Ondestroy");
-    }
-
-    public void SetTargetRequire(TypeFishing typeFishing)
-    {
-
     }
 
     public void AddScore(int value)
@@ -120,24 +100,6 @@ public class FishingManager : SingletonMono<FishingManager>
             itemsCorrect.Add(randomIndex);
             index.Remove(randomIndex);
         }
-    }
-
-    private TypeFishing? GetNextRequire()
-    {
-        return null;
-    }
-
-
-    static KeyValuePair<TKey, TValue> GetRandomElement<TKey, TValue>(Dictionary<TKey, TValue> dictionary)
-    {
-        // Use Random to generate a random index
-        System.Random random = new System.Random();
-        int randomIndex = random.Next(0, dictionary.Count);
-
-        // Access the corresponding element in the dictionary
-        KeyValuePair<TKey, TValue> randomElement = dictionary.ElementAt(randomIndex);
-
-        return randomElement;
     }
 
     public Action OnStartFishing;

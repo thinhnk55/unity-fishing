@@ -9,7 +9,8 @@ public class Rod : MonoBehaviour
     [SerializeField] Image RodImg;
     [SerializeField] Hook hook;
     [SerializeField] LineRenderer line;
-    [SerializeField] DiggerState diggerState;
+    [SerializeField] DiggerState diggerState = DiggerState.NONE;
+    public DiggerState DiggerState => diggerState;
     [SerializeField] float hookInitYPos;
 
     [Header("Speed Rod")]
@@ -109,7 +110,7 @@ public class Rod : MonoBehaviour
 
 }
 
-enum DiggerState
+public enum DiggerState
 {
     NONE,
     SWINGING,

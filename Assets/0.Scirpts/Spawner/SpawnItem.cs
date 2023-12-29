@@ -1,6 +1,7 @@
 using Framework;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,15 +41,18 @@ public class SpawnItem : MonoBehaviour
     {
         while (true)
         {
+            List<int> indexList = new List<int>() { 3, 4, 5, 6, 7, 8, 9 };
+            int randomIndexIncorrect = indexList.GetRandom();
+            indexList.Remove(randomIndexIncorrect);
+            CreateItem(randomIndexIncorrect);
+            yield return new WaitForSeconds(duration / 2);
+
             int randomCorrectItem = UnityEngine.Random.Range(0, 3);
-            Debug.Log(randomCorrectItem);
             CreateItem(randomCorrectItem);
+            yield return new WaitForSeconds(duration / 2);
 
-            yield return new WaitForSeconds(duration/3);
-
-            int randomIncorrectItem = UnityEngine.Random.Range(3, 10);
-            CreateItem(randomIncorrectItem);
-
+            randomIndexIncorrect = indexList.GetRandom();
+            CreateItem(randomIndexIncorrect);
             yield return new WaitForSeconds(duration);
         }
     }

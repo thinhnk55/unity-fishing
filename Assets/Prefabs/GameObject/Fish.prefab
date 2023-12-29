@@ -106,7 +106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMovingRight: 0
   IsMoving: 1
-  speed: 1
+  speed: 1.5
 --- !u!61 &3922854872193807953
 BoxCollider2D:
   m_ObjectHideFlags: 0
