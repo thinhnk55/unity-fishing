@@ -14,7 +14,7 @@ public enum TypeFishing
     CaHong = 2,
 }
 
-public class FishingManager : HardSingletonMono<FishingManager>
+public class FishingManager : SingletonMono<FishingManager>
 {
     private bool isGameOver;
     public bool IsGameOver
@@ -26,11 +26,9 @@ public class FishingManager : HardSingletonMono<FishingManager>
         }
     }
 
-    public int Score;
-    [SerializeField] Dictionary<TypeFishing, Sprite> mappingSpriteRequire = new Dictionary<TypeFishing, Sprite>();
-    public Dictionary<TypeFishing, Sprite> mappingSpriteRequire1 = new Dictionary<TypeFishing, Sprite>();
-    [SerializeField] Sprite[] imageFish;
-    public TypeFishing TypeFishingRequire { get; private set; }
+    public int Score = 5;
+    [SerializeField] int itemCorrectNumber;
+    public List<int> itemsCorrect;
 
     [Header("Paramater Camera")]
     public float halfHeightOfCamera;
@@ -53,19 +51,18 @@ public class FishingManager : HardSingletonMono<FishingManager>
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < imageFish.Length; i++)
-        {
-            mappingSpriteRequire.Add((TypeFishing)i, imageFish[i]);
-            mappingSpriteRequire1.Add((TypeFishing)i, imageFish[i]);
-        }
+        SetItemsCorrect();
+    }
 
-        SetTargetRequire(GetNextRequire().Value);
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        Debug.LogError("Ondestroy");
     }
 
     public void SetTargetRequire(TypeFishing typeFishing)
     {
-        TypeFishingRequire = typeFishing;
-        //OnChangeTargetRequire(mappingSpriteRequire[TypeFishingRequire]);
+
     }
 
     public void AddScore(int value)
@@ -75,29 +72,26 @@ public class FishingManager : HardSingletonMono<FishingManager>
         OnChangeScore(Score);
     }
 
-    public bool CheckMatch(TypeFishing typeFishing)
+    public int CheckMatch(int idItem)
     {
-        if (TypeFishingRequire == typeFishing)
+        for (int i = 0; i < itemCorrectNumber; i++)
         {
-            AddScore(1);
-            mappingSpriteRequire.Remove(typeFishing);
-            TypeFishing? nextTypeFishing = GetNextRequire();
-            if (nextTypeFishing != null)
+            if (itemsCorrect[i] == idItem)
             {
-                SetTargetRequire(nextTypeFishing.Value);
+                AddScore(3);
+                return i;
+            } 
+        }
+        AddScore(-1);
+        return -1;
+    }
 
-            }
-            else
-            {
-                GameOver(true);
-            }
-            return true;
-        }
-        else
-        {
-            AddScore(-1);
-            return false;
-        }
+    public void ChangeTarget(int index)
+    {
+        int random = UnityEngine.Random.Range(3, 10);
+        int tmp = itemsCorrect[index];
+        itemsCorrect[index] = itemsCorrect[random];
+        itemsCorrect[random] = tmp;
     }
 
     public void GameOver(bool isWin)
@@ -117,13 +111,19 @@ public class FishingManager : HardSingletonMono<FishingManager>
         OnGameOver?.Invoke(isWin);
     }
 
+    private void SetItemsCorrect()
+    {
+        List<int> index = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        for(int i=0; i<10; i++)
+        {
+            int randomIndex = index.GetRandom();
+            itemsCorrect.Add(randomIndex);
+            index.Remove(randomIndex);
+        }
+    }
+
     private TypeFishing? GetNextRequire()
     {
-        if(mappingSpriteRequire.Count > 0)
-        {
-            KeyValuePair<TypeFishing, Sprite> KVP = GetRandomElement(mappingSpriteRequire);
-            return KVP.Key;
-        }
         return null;
     }
 
@@ -143,6 +143,5 @@ public class FishingManager : HardSingletonMono<FishingManager>
     public Action OnStartFishing;
     public Action OnStopFishing;
     public Action<int> OnChangeScore;
-    public Action<Sprite> OnChangeTargetRequire;
     public Action<bool> OnGameOver;
 }

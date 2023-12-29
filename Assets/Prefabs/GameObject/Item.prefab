@@ -63,7 +63,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attachable: 1
-  TypeFishing: 0
+  idItem: 0
   rectSelf: {fileID: 3198175942854810105}
   uiCanvas: {fileID: 0}
   timeCountDownEnable: 10

@@ -1,6 +1,9 @@
+using Framework;
 using System;
 using System.Collections;
+using System.ComponentModel.Design;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpawnItem : MonoBehaviour
 {
@@ -37,15 +40,30 @@ public class SpawnItem : MonoBehaviour
     {
         while (true)
         {
-            Vector2 positon = GetRandomPosition();
-            MovingObject fishObj = ObjectPoolManager.SpawnObject<MovingObject>(prefabItem, positon, transformParent);
+            int randomCorrectItem = UnityEngine.Random.Range(0, 3);
+            Debug.Log(randomCorrectItem);
+            CreateItem(randomCorrectItem);
 
-            fishObj.isMovingRight = positon.x < 0 ? true : false;
-            fishObj.transform.rotation = Quaternion.Euler(0, positon.x < 0 ? 180 : 0, 0);
-            fishObj.gameObject.SetActive(true);
+            yield return new WaitForSeconds(duration/3);
+
+            int randomIncorrectItem = UnityEngine.Random.Range(3, 10);
+            CreateItem(randomIncorrectItem);
 
             yield return new WaitForSeconds(duration);
         }
+    }
+
+    private void CreateItem(int index)
+    {
+        Vector2 positon = GetRandomPosition();
+        MovingObject itemObj = ObjectPoolManager.SpawnObject<MovingObject>(prefabItem, positon, transformParent);
+        Item item = itemObj.GetComponent<Item>();
+        item.SetImage(SpriteFactory.Items[FishingManager.Instance.itemsCorrect[index]]);
+        item.idItem = FishingManager.Instance.itemsCorrect[index];
+
+        itemObj.isMovingRight = positon.x < 0 ? true : false;
+        itemObj.transform.rotation = Quaternion.Euler(0, positon.x < 0 ? 180 : 0, 0);
+        itemObj.gameObject.SetActive(true);
     }
 
     private void OnGameOver(bool isWin)

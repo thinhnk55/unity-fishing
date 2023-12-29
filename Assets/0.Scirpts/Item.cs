@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class Item : GrabableObject
 {
-    public TypeFishing TypeFishing;
+    public int idItem;
     [SerializeField] RectTransform rectSelf;
     [SerializeField] RectTransform uiCanvas;
     [SerializeField] float timeCountDownEnable;
@@ -51,20 +51,27 @@ public class Item : GrabableObject
     public override void OnCollectObject(Hook collector)
     {
         FishingManager.Instance.OnStopFishing();
-        //if (!FishingManager.instance.CheckMatch(TypeFishing))
-        //{
-        //}
-        //else
-        //{
-
-        //}
-        FishingManager.Instance.OnChangeScore(1);
-        frame.sprite = frameCorrect;
-        frame.rectTransform.DOScale(scaleFrame, timeScaleFrame);
-        stars.Play();
-        effect.SetActive(true);
-        collector.RemoveObject();
-        FlyToTarget(2);
+        int idCard = FishingManager.Instance.CheckMatch(idItem);
+        if (idCard >= 0)
+        {
+            frame.sprite = frameCorrect;
+            frame.rectTransform.DOScale(scaleFrame, timeScaleFrame);
+            stars.Play();
+            effect.SetActive(true);
+            collector.RemoveObject();
+            FlyToTarget(idCard);
+        }
+        else
+        {
+            frame.sprite = frameWrong;
+            frame.rectTransform.DOScale(scaleFrame, timeScaleFrame);
+            collector.RemoveObject();
+            DOVirtual.DelayedCall(0.5f, () =>
+            {
+                this.gameObject.SetActive(false);
+                FishingManager.Instance.OnStartFishing();
+            });
+        }
     }
 
     private void Update()
@@ -74,6 +81,11 @@ public class Item : GrabableObject
         {
             this.gameObject.SetActive(false);
         }
+    }
+
+    public void SetImage(Sprite image)
+    {
+        itemImg.sprite = image;
     }
 
 
@@ -104,6 +116,7 @@ public class Item : GrabableObject
 
 
             itemCardTarget.ScaleToZero();
+            FishingManager.Instance.ChangeTarget(id);
             await Task.Delay((int)((itemCardTarget.TimeScaleToOne) * 1000), cancellationTokenSource.Token);
 
             itemFly.gameObject.SetActive(false);

@@ -1204,6 +1204,10 @@ PrefabInstance:
       propertyPath: index
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5627839545264234667, guid: ee8b8cb8e4efa5a4f9af33c03970248d, type: 3}
+      propertyPath: idButton
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6582295247313004956, guid: ee8b8cb8e4efa5a4f9af33c03970248d, type: 3}
       propertyPath: m_Name
       value: Item (2)
@@ -1894,6 +1898,7 @@ GameObject:
   - component: {fileID: 1517205727}
   - component: {fileID: 1517205726}
   - component: {fileID: 1517205725}
+  - component: {fileID: 1517205729}
   m_Layer: 5
   m_Name: UICanvas
   m_TagString: Untagged
@@ -1986,6 +1991,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1517205729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517205724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f46c02b64ab62484dbeea065cbed9320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: {fileID: 1607309767}
+  requireTarget: {fileID: 0}
 --- !u!114 &1547918874 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4274568574150998305, guid: ee8b8cb8e4efa5a4f9af33c03970248d, type: 3}
@@ -2025,6 +2044,10 @@ PrefabInstance:
       propertyPath: m_Type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5627839545264234667, guid: ee8b8cb8e4efa5a4f9af33c03970248d, type: 3}
+      propertyPath: idButton
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6582295247313004956, guid: ee8b8cb8e4efa5a4f9af33c03970248d, type: 3}
       propertyPath: m_Name
       value: Item
@@ -2063,15 +2086,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9158003189257513619, guid: ee8b8cb8e4efa5a4f9af33c03970248d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9158003189257513619, guid: ee8b8cb8e4efa5a4f9af33c03970248d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9158003189257513619, guid: ee8b8cb8e4efa5a4f9af33c03970248d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9158003189257513619, guid: ee8b8cb8e4efa5a4f9af33c03970248d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2308,7 +2331,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1609788451}
-  - component: {fileID: 1609788450}
+  - component: {fileID: 1609788452}
   m_Layer: 0
   m_Name: GAMEMANAGER
   m_TagString: Untagged
@@ -2316,26 +2339,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1609788450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1609788449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e7b6bc5369a8a64f8ffa0cc7006f716, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  Score: 0
-  imageFish:
-  - {fileID: 21300000, guid: 85011d0c27b993148b3192ce63fb696c, type: 3}
-  - {fileID: 21300000, guid: faf10864719419b4f84fc6471008d563, type: 3}
-  - {fileID: 21300000, guid: b5015e670ddba974c9936ac8032a97ac, type: 3}
-  halfHeightOfCamera: 0
-  halfWidthOfCamera: 0
 --- !u!4 &1609788451
 Transform:
   m_ObjectHideFlags: 0
@@ -2351,6 +2354,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1609788452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609788449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e7b6bc5369a8a64f8ffa0cc7006f716, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 0
+  Score: 0
+  itemCorrectNumber: 3
+  itemsCorrect: 
+  halfHeightOfCamera: 0
+  halfWidthOfCamera: 0
 --- !u!1 &1674891795
 GameObject:
   m_ObjectHideFlags: 0

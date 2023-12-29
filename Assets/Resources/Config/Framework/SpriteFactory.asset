@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2633c311359dae4b9e0b9da2d1e4818, type: 3}
   m_Name: SpriteFactory
   m_EditorClassIdentifier: 
-  items1:
-  - Id: 0
-    Sprite: {fileID: 0}
-    Sound: {fileID: 0}
-    Word: 
-  - Id: 0
-    Sprite: {fileID: 0}
-    Sound: {fileID: 0}
-    Word: 
+  items:
+  - {fileID: 21300000, guid: 7c6fe79ae92d7d6409597096a8e5aa99, type: 3}
+  - {fileID: 21300000, guid: 16302ab0f8493474283475dfd590e232, type: 3}
+  - {fileID: 21300000, guid: 46c9ad1ae8944e74fab33c95f6e8bc80, type: 3}
+  - {fileID: 21300000, guid: a16db023e8249ec4b8d842c1f7ba1121, type: 3}
+  - {fileID: 21300000, guid: 7752dc99f3a93fb49930f0690f94fcad, type: 3}
+  - {fileID: 21300000, guid: ed2bbfffa0a63b84fa3722f61c06a53c, type: 3}
+  - {fileID: 21300000, guid: 046b0c591b59d434d87736e45a230f97, type: 3}
+  - {fileID: 21300000, guid: 2b023ade646bf9444b7009189f273576, type: 3}
+  - {fileID: 21300000, guid: eaf6535481fbbd347a9020ec77be4e13, type: 3}
+  - {fileID: 21300000, guid: 77c64187c94746542b6f3113f6c70824, type: 3}

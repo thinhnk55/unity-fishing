@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1490918312258645222}
   - component: {fileID: 4274568574150998305}
   - component: {fileID: 1312489120634481003}
-  - component: {fileID: 7022671511279235574}
+  - component: {fileID: 5627839545264234667}
   m_Layer: 5
   m_Name: BackGround
   m_TagString: Untagged
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7022671511279235574
+--- !u!114 &5627839545264234667
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,10 +130,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3515579014412357232}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c2c0922c6336dc4ab2b29814bd6aa33, type: 3}
+  m_Script: {fileID: 11500000, guid: b920bf734a10ac44e893eebcacbaa8fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _popup: {fileID: 2870720579314870917, guid: 5287a6fe6210558488d8f07200e4d5c7, type: 3}
+  idButton: 1
+  popupHint: {fileID: 2870720579314870917, guid: 5287a6fe6210558488d8f07200e4d5c7, type: 3}
 --- !u!1 &6582295247313004956
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,6 +190,7 @@ MonoBehaviour:
   rect: {fileID: 9158003189257513619}
   imgBG: {fileID: 4274568574150998305}
   index: 0
+  isShowedHint: 0
   timeScaleToOne: 0.75
   timeSpeech: 1
   scaleDefault: 1

@@ -9,24 +9,16 @@ public class FishingUI : MonoBehaviour
     void Awake()
     {
         FishingManager.Instance.OnChangeScore += OnChangeScore;
-        FishingManager.Instance.OnChangeTargetRequire += OnChangeTargetRequire;
+        OnChangeScore(5);
     }
 
     private void OnDestroy()
     {
         FishingManager.Instance.OnChangeScore -= OnChangeScore;
-        FishingManager.Instance.OnChangeTargetRequire -= OnChangeTargetRequire;
     }
 
     private void OnChangeScore(int score)
     {
-        //this.score.SetText(score.ToString());
+        this.score.SetText(FishingManager.Instance.Score.ToString());
     } 
-
-    private void OnChangeTargetRequire(Sprite targetRequire)
-    {
-        //this.requireTarget.sprite = targetRequire;
-    }
-
-
 }

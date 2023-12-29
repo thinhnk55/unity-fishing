@@ -34,7 +34,7 @@ public class ItemCard : MonoBehaviour
 
     private void PlaySound()
     {
-        Debug.Log("Play Sound");
+        Debug.Log("Play Sound: " + SpriteFactory.Items[FishingManager.Instance.itemsCorrect[index]].name);
     }
 
     public void PlayAnimPlaySound()

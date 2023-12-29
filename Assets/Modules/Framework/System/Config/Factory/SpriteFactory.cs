@@ -14,6 +14,6 @@ namespace Framework
                 Instance.ToString();
             }
         }
-        [SerializeField] private List<FishingData.Item> items1; public static List<FishingData.Item> Items { get { return Instance.items1; } }
+        [SerializeField] private List<Sprite> items; public static List<Sprite> Items { get { return Instance.items; } }
     }
 }
