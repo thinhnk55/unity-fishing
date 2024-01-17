@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Framework
 {
     [RequireComponent(typeof(Button))]
+
     public class ButtonBase : CacheMonoBehaviour
     {
         Button _button;

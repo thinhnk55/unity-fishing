@@ -1,16 +1,16 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated September 24, 2021. Replaces all prior versions.
+ * Last updated July 28, 2023. Replaces all prior versions.
  *
- * Copyright (c) 2013-2021, Esoteric Software LLC
+ * Copyright (c) 2013-2023, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
  * conditions of Section 2 of the Spine Editor License Agreement:
  * http://esotericsoftware.com/spine-editor-license
  *
- * Otherwise, it is permitted to integrate the Spine Runtimes into software
- * or otherwise create derivative works of the Spine Runtimes (collectively,
+ * Otherwise, it is permitted to integrate the Spine Runtimes into software or
+ * otherwise create derivative works of the Spine Runtimes (collectively,
  * "Products"), provided that each user of the Products must obtain their own
  * Spine Editor license and redistribution of the Products in any form must
  * include this license and copyright notice.
@@ -23,8 +23,8 @@
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES,
  * BUSINESS INTERRUPTION, OR LOSS OF USE, DATA, OR PROFITS) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THE
+ * SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
 using Spine;
@@ -53,11 +53,11 @@ namespace Spine.Unity {
 		public bool RequiresBlendModeMaterials { get { return requiresBlendModeMaterials; } set { requiresBlendModeMaterials = value; } }
 
 		public BlendMode BlendModeForMaterial (Material material) {
-			foreach (var pair in multiplyMaterials)
+			foreach (ReplacementMaterial pair in multiplyMaterials)
 				if (pair.material == material) return BlendMode.Multiply;
-			foreach (var pair in additiveMaterials)
+			foreach (ReplacementMaterial pair in additiveMaterials)
 				if (pair.material == material) return BlendMode.Additive;
-			foreach (var pair in screenMaterials)
+			foreach (ReplacementMaterial pair in screenMaterials)
 				if (pair.material == material) return BlendMode.Screen;
 			return BlendMode.Normal;
 		}
@@ -72,18 +72,18 @@ namespace Spine.Unity {
 
 			if (skeletonData == null) return false;
 
-			var skinEntries = new List<Skin.SkinEntry>();
-			var slotsItems = skeletonData.Slots.Items;
+			List<Skin.SkinEntry> skinEntries = new List<Skin.SkinEntry>();
+			SlotData[] slotsItems = skeletonData.Slots.Items;
 			for (int slotIndex = 0, slotCount = skeletonData.Slots.Count; slotIndex < slotCount; slotIndex++) {
-				var slot = slotsItems[slotIndex];
+				SlotData slot = slotsItems[slotIndex];
 				if (slot.BlendMode == BlendMode.Normal) continue;
 				if (!applyAdditiveMaterial && slot.BlendMode == BlendMode.Additive) continue;
 
 				skinEntries.Clear();
-				foreach (var skin in skeletonData.Skins)
+				foreach (Skin skin in skeletonData.Skins)
 					skin.GetAttachments(slotIndex, skinEntries);
 
-				foreach (var entry in skinEntries) {
+				foreach (Skin.SkinEntry entry in skinEntries) {
 					if (entry.Attachment is IHasTextureRegion) {
 						requiresBlendModeMaterials = true;
 						return true;
@@ -98,10 +98,10 @@ namespace Spine.Unity {
 			if (!requiresBlendModeMaterials)
 				return;
 
-			var skinEntries = new List<Skin.SkinEntry>();
-			var slotsItems = skeletonData.Slots.Items;
+			List<Skin.SkinEntry> skinEntries = new List<Skin.SkinEntry>();
+			SlotData[] slotsItems = skeletonData.Slots.Items;
 			for (int slotIndex = 0, slotCount = skeletonData.Slots.Count; slotIndex < slotCount; slotIndex++) {
-				var slot = slotsItems[slotIndex];
+				SlotData slot = slotsItems[slotIndex];
 				if (slot.BlendMode == BlendMode.Normal) continue;
 				if (!applyAdditiveMaterial && slot.BlendMode == BlendMode.Additive) continue;
 
@@ -121,18 +121,18 @@ namespace Spine.Unity {
 					continue;
 
 				skinEntries.Clear();
-				foreach (var skin in skeletonData.Skins)
+				foreach (Skin skin in skeletonData.Skins)
 					skin.GetAttachments(slotIndex, skinEntries);
 
-				foreach (var entry in skinEntries) {
-					var renderableAttachment = entry.Attachment as IHasTextureRegion;
+				foreach (Skin.SkinEntry entry in skinEntries) {
+					IHasTextureRegion renderableAttachment = entry.Attachment as IHasTextureRegion;
 					if (renderableAttachment != null) {
 						if (renderableAttachment.Region != null) {
 							renderableAttachment.Region = CloneAtlasRegionWithMaterial(
 							(AtlasRegion)renderableAttachment.Region, replacementMaterials);
 						} else {
 							if (renderableAttachment.Sequence != null) {
-								var regions = renderableAttachment.Sequence.Regions;
+								TextureRegion[] regions = renderableAttachment.Sequence.Regions;
 								for (int i = 0; i < regions.Length; ++i) {
 									regions[i] = CloneAtlasRegionWithMaterial(
 										(AtlasRegion)regions[i], replacementMaterials);
@@ -145,9 +145,9 @@ namespace Spine.Unity {
 		}
 
 		protected AtlasRegion CloneAtlasRegionWithMaterial (AtlasRegion originalRegion, List<ReplacementMaterial> replacementMaterials) {
-			var newRegion = originalRegion.Clone();
+			AtlasRegion newRegion = originalRegion.Clone();
 			Material material = null;
-			foreach (var replacement in replacementMaterials) {
+			foreach (ReplacementMaterial replacement in replacementMaterials) {
 				if (replacement.pageName == originalRegion.page.name) {
 					material = replacement.material;
 					break;
@@ -155,7 +155,7 @@ namespace Spine.Unity {
 			}
 
 			AtlasPage originalPage = originalRegion.page;
-			var newPage = originalPage.Clone();
+			AtlasPage newPage = originalPage.Clone();
 			newPage.rendererObject = material;
 			newRegion.page = newPage;
 			return newRegion;

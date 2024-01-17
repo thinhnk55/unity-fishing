@@ -3,6 +3,7 @@ using Framework.SimpleJSON;
 using System;
 using UnityEngine;
 using WebSocketSharp;
+
 namespace Server
 {
     public class WSClient : Singleton<WSClient>
@@ -15,40 +16,61 @@ namespace Server
         public event Callback OnLoginInOtherDevice;
         public event Callback OnAdminKick;
         public WebSocket ws;
+
         public void Connect(int userId, string token)
         {
-            Messenger<ServerResponse>.AddListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
-            Messenger<GameEvent>.AddListener(GameEvent.LostConnection, OnLostConnection);
+            Debug.Log("Connect");
             ws = new WebSocket(ServerConfig.WebSocketURL + "?id=" + userId + "&token=" + token);
-            //ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ 12 + "&token=" + "7lnyeclvtjlk49en9b63dsx8e6q5tqyi");
             ws.OnOpen += OnOpen;
-            ws.OnMessage += OnMessage;
-            ws.OnError += OnError;
+            //ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ 12 + "&token=" + "7lnyeclvtjlk49en9b63dsx8e6q5tqyi");
             ws.Connect();
-            WSPingPong.Create();
-        }
-        public void Disconnect(bool unlistening)
-        {
-            Messenger<ServerResponse>.RemoveListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
-            Messenger<GameEvent>.RemoveListener(GameEvent.LostConnection, OnLostConnection);
-            Debug.Log("Disconnect");
-            if (unlistening)
+            if (ws.IsAlive)
             {
+
+            }
+        }
+        public void Disconnect(bool unlisten)
+        {
+            if (unlisten)
+            {
+                Debug.Log("Unlisten");
                 OnDisconnect?.Invoke();
             }
-            ws.OnOpen -= OnOpen;
-            ws.OnMessage -= OnMessage;
-            ws.OnError -= OnError;
             ws.Close();
-            WSPingPong.Destroy();
         }
-        public void Unlisten()
+        public void OnOpen(object sender, EventArgs e)
         {
-            OnDisconnect?.Invoke();
+            Debug.Log("Open " + ((WebSocket)sender).Url);
+            Messenger<ServerResponse>.AddListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
+            Messenger<GameEvent>.AddListener(GameEvent.LostConnection, OnLostConnection);
+            ws.OnMessage += OnMessage;
+            ws.OnError += OnError;
+            ws.OnClose += OnClose;
+            WSPingPong.Create();
         }
-        public void Ping()
+        private void OnClose(object sender, CloseEventArgs e)
         {
-            ws.Send("{\"id\":2}");
+            MainThreadDispatcher.ExecuteOnMainThread(() =>
+            {
+                Debug.Log("Close " + ((WebSocket)sender).Url + " : " + e.Reason + " - " + e.Code);
+                if (e.Code != 1005 && e.Code != 1000)
+                {
+                    Messenger<GameEvent>.Broadcast(GameEvent.LostConnection);
+                    OnDisconnect?.Invoke();
+                    Debug.Log("Network shutdown unintentionally");
+                }
+                else
+                {
+                    Debug.Log("Close network manually");
+                }
+                Messenger<ServerResponse>.RemoveListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
+                Messenger<GameEvent>.RemoveListener(GameEvent.LostConnection, OnLostConnection);
+                WSPingPong.Destroy();
+                ws.OnOpen -= OnOpen;
+                ws.OnMessage -= OnMessage;
+                ws.OnError -= OnError;
+                ws.OnClose -= OnClose;
+            });
         }
 
         public void Send(JSONNode json)
@@ -56,25 +78,18 @@ namespace Server
             try
             {
                 ws.Send(json.ToString());
+                Debug.Log($"<color=#FFA500>{(ServerRequest)json["id"].AsInt} - {json}</color>");
             }
             catch (Exception e)
             {
-                if (e != null)
-                {
-                    Debug.LogError(e.ToString());
-                }
                 Messenger<GameEvent>.Broadcast(GameEvent.LostConnection);
-                throw;
+                Instance.Disconnect(true);
+                Debug.Log(e);
             }
-            Debug.Log($"<color=#FFA500>{json}</color>");
         }
-        public void OnOpen(object sender, EventArgs e)
-        {
-            Debug.Log("Open " + ((WebSocket)sender).Url);
-        }
+
         public void OnMessage(object sender, MessageEventArgs e)
         {
-            Debug.Log($"<color=yellow>{e.Data}</color>");
             MainThreadDispatcher.ExecuteOnMainThread(() =>
             {
                 JSONNode idJson = JSON.Parse(e.Data)["id"];
@@ -83,6 +98,7 @@ namespace Server
                     ServerResponse id = (ServerResponse)int.Parse(idJson);
                     if (Messenger<ServerResponse>.eventTable.ContainsKey(id))
                     {
+                        Debug.Log($"<color=yellow>{id} - {e.Data}</color>");
                         Messenger<ServerResponse>.Broadcast(id, JSON.Parse(e.Data));
                     }
                 }
@@ -127,11 +143,18 @@ namespace Server
                     break;
                 case 4:
                     OnAdminKick?.Invoke();
-                    Disconnect(false);
+                    Disconnect(true);
                     break;
                 default:
                     break;
             }
+        }
+    }
+    public static class JsonExtension
+    {
+        public static void RequestServer(this JSONNode json)
+        {
+            WSClient.Instance.Send(json);
         }
     }
 }

@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace Framework
@@ -14,5 +13,7 @@ namespace Framework
                 Instance.ToString();
             }
         }
+        [SerializeField] private TMP_FontAsset fontDefault; public static TMP_FontAsset FontDefault { get { return Instance.fontDefault; } }
+
     }
 }

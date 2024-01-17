@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DontDestroyOnLoad : MonoBehaviour
 {
-    protected virtual void Awake() {
+    protected virtual void Awake()
+    {
         DontDestroyOnLoad(gameObject);
     }
 }

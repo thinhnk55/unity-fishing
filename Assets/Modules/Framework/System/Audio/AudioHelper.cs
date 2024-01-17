@@ -1,6 +1,5 @@
 using Framework;
 using UnityEngine;
-using UnityEngine.XR;
 
 public static class AudioHelper
 {
@@ -11,13 +10,14 @@ public static class AudioHelper
         AudioManager.Instance.PlaySound(sound, soundConfig.clipConfigs[Random.Range(0, AudioConfig.SoundConfigs[sound].clipConfigs.Length)], transform, soundConfig.isFollow);
     }
 
-    public static void StopAllSound(string soundName)
+    public static void StopAllSound()
     {
+        AudioManager.Instance.StopAllSound();
     }
     public static void PlayMusic(this MusicType music)
     {
         if (!PDataSettings.MusicEnabled) return;
-        AudioManager.Instance.PlayMusic(AudioConfig.MusicConfigs[music].clip, AudioConfig.MusicConfigs[music].volume);
+        AudioManager.Instance.PlayMusic(AudioConfig.MusicConfigs[music].clipConfig.clip, AudioConfig.MusicConfigs[music].clipConfig.volumn);
     }
 
     public static void StopMusic()

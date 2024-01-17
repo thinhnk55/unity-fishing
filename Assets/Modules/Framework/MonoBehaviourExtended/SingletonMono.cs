@@ -26,7 +26,6 @@ public class SingletonMono<T> : CacheMonoBehaviour where T : CacheMonoBehaviour
             {
                 // Search for existing instance.
                 _instance = (T)FindObjectOfType(typeof(T));
-
                 // Create new instance if one doesn't already exist.
                 if (safeGet && _instance == null)
                 {

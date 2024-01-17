@@ -1,16 +1,16 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated September 24, 2021. Replaces all prior versions.
+ * Last updated July 28, 2023. Replaces all prior versions.
  *
- * Copyright (c) 2013-2021, Esoteric Software LLC
+ * Copyright (c) 2013-2023, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
  * conditions of Section 2 of the Spine Editor License Agreement:
  * http://esotericsoftware.com/spine-editor-license
  *
- * Otherwise, it is permitted to integrate the Spine Runtimes into software
- * or otherwise create derivative works of the Spine Runtimes (collectively,
+ * Otherwise, it is permitted to integrate the Spine Runtimes into software or
+ * otherwise create derivative works of the Spine Runtimes (collectively,
  * "Products"), provided that each user of the Products must obtain their own
  * Spine Editor license and redistribution of the Products in any form must
  * include this license and copyright notice.
@@ -23,8 +23,8 @@
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES,
  * BUSINESS INTERRUPTION, OR LOSS OF USE, DATA, OR PROFITS) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THE
+ * SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
 using System.Collections;
@@ -66,7 +66,7 @@ namespace Spine.Unity.AttachmentTools {
 			TextureFormat pmaCloneTextureFormat = AtlasUtilities.SpineTextureFormat,
 			bool pmaCloneMipmaps = AtlasUtilities.UseMipMaps) {
 
-			var atlasRegion = premultiplyAlpha ?
+			AtlasRegion atlasRegion = premultiplyAlpha ?
 				sprite.ToAtlasRegionPMAClone(sourceMaterial, pmaCloneTextureFormat, pmaCloneMipmaps) :
 				sprite.ToAtlasRegion(new Material(sourceMaterial) { mainTexture = sprite.texture });
 			if (!pivotShiftsMeshUVCoords && o is MeshAttachment) {
@@ -76,7 +76,7 @@ namespace Spine.Unity.AttachmentTools {
 			}
 			float scale = 1f / sprite.pixelsPerUnit;
 			if (useOriginalRegionScale) {
-				var regionAttachment = o as RegionAttachment;
+				RegionAttachment regionAttachment = o as RegionAttachment;
 				if (regionAttachment != null)
 					scale = regionAttachment.Width / regionAttachment.Region.OriginalWidth;
 			}
@@ -92,7 +92,7 @@ namespace Spine.Unity.AttachmentTools {
 		/// <param name="useOriginalRegionSize">If <c>true</c> the size of the original attachment will be followed, instead of using the Sprite size.</param>
 		/// <param name="scale">Unity units per pixel scale used to scale the atlas region size when not using the original region size.</param>
 		public static Attachment GetRemappedClone (this Attachment o, AtlasRegion atlasRegion, bool cloneMeshAsLinked = true, bool useOriginalRegionSize = false, float scale = 0.01f) {
-			var regionAttachment = o as RegionAttachment;
+			RegionAttachment regionAttachment = o as RegionAttachment;
 			if (regionAttachment != null) {
 				RegionAttachment newAttachment = (RegionAttachment)regionAttachment.Copy();
 				newAttachment.Region = atlasRegion;
@@ -103,7 +103,7 @@ namespace Spine.Unity.AttachmentTools {
 				newAttachment.UpdateRegion();
 				return newAttachment;
 			} else {
-				var meshAttachment = o as MeshAttachment;
+				MeshAttachment meshAttachment = o as MeshAttachment;
 				if (meshAttachment != null) {
 					MeshAttachment newAttachment = cloneMeshAsLinked ? meshAttachment.NewLinkedMesh() : (MeshAttachment)meshAttachment.Copy();
 					newAttachment.Region = atlasRegion;

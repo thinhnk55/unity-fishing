@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2b26901ac937fe41801f0254cb15929, type: 3}
   m_Name: PrefabFactory
   m_EditorClassIdentifier: 
+  corePrefab: {fileID: 0}
   textPrefab: {fileID: 0}
-  audioSourcePrefab: {fileID: 0}
+  audioSourcePrefab: {fileID: 4242963050888768005, guid: e88fa4276d207e44c836a13d2bd55735, type: 3}
   winPanel: {fileID: 2055890587361386808, guid: fd8d597025659c342823fa040c764e89, type: 3}
   losePanel: {fileID: 3944466869300572501, guid: c5f450faf318fa7409204d2f2c103490, type: 3}
   itemFly: {fileID: 1911532462820756454, guid: c9787fd9784b80a41a6af1e56ad657d2, type: 3}

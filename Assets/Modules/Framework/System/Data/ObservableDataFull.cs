@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Framework
 {
@@ -26,6 +27,19 @@ namespace Framework
         public ObservableDataFull(T defaultValue)
         {
             _data = defaultValue;
+            OnDataChanged?.Invoke(defaultValue, defaultValue);
+        }
+
+        public ObservableDataFull(T defaultValue, Callback<T, T> OnDataChanged)
+        {
+            _data = defaultValue;
+            this.OnDataChanged += OnDataChanged;
+            OnDataChanged?.Invoke(defaultValue, defaultValue);
+        }
+
+        public void Invoke(int index)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,16 +1,16 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated September 24, 2021. Replaces all prior versions.
+ * Last updated July 28, 2023. Replaces all prior versions.
  *
- * Copyright (c) 2013-2022, Esoteric Software LLC
+ * Copyright (c) 2013-2023, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
  * conditions of Section 2 of the Spine Editor License Agreement:
  * http://esotericsoftware.com/spine-editor-license
  *
- * Otherwise, it is permitted to integrate the Spine Runtimes into software
- * or otherwise create derivative works of the Spine Runtimes (collectively,
+ * Otherwise, it is permitted to integrate the Spine Runtimes into software or
+ * otherwise create derivative works of the Spine Runtimes (collectively,
  * "Products"), provided that each user of the Products must obtain their own
  * Spine Editor license and redistribution of the Products in any form must
  * include this license and copyright notice.
@@ -23,8 +23,8 @@
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES,
  * BUSINESS INTERRUPTION, OR LOSS OF USE, DATA, OR PROFITS) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THE
+ * SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
 using Spine.Unity.AnimationTools;
@@ -123,7 +123,7 @@ namespace Spine.Unity {
 
 		protected bool SkeletonAnimationUsesFixedUpdate {
 			get {
-				var skeletonAnimation = skeletonComponent as ISkeletonAnimation;
+				ISkeletonAnimation skeletonAnimation = skeletonComponent as ISkeletonAnimation;
 				if (skeletonAnimation != null) {
 					return skeletonAnimation.UpdateTiming == UpdateTiming.InFixedUpdate;
 				}
@@ -163,7 +163,7 @@ namespace Spine.Unity {
 				initialOffsetRotation = rootMotionBone.Rotation;
 			}
 
-			var skeletonAnimation = skeletonComponent as ISkeletonAnimation;
+			ISkeletonAnimation skeletonAnimation = skeletonComponent as ISkeletonAnimation;
 			if (skeletonAnimation != null) {
 				skeletonAnimation.UpdateLocal -= HandleUpdateLocal;
 				skeletonAnimation.UpdateLocal += HandleUpdateLocal;
@@ -198,11 +198,11 @@ namespace Spine.Unity {
 					}
 
 					Vector2 rigidbodyDisplacement2D = new Vector2(rigidbodyDisplacement.x, rigidbodyDisplacement.y);
-					rigidBody2D.MovePosition(gravityAndVelocityMovement + new Vector2(transform.position.x, transform.position.y)
+					rigidBody2D.MovePosition(gravityAndVelocityMovement + new Vector2(rigidBody2D.position.x, rigidBody2D.position.y)
 						+ rigidbodyDisplacement2D + additionalRigidbody2DMovement);
 					rigidBody2D.MoveRotation(rigidbody2DRotation + rigidBody2D.rotation);
 				} else if (rigidBody != null) {
-					rigidBody.MovePosition(transform.position
+					rigidBody.MovePosition(rigidBody.position
 						+ new Vector3(rigidbodyDisplacement.x, rigidbodyDisplacement.y, rigidbodyDisplacement.z));
 					rigidBody.MoveRotation(rigidBody.rotation * rigidbodyLocalRotation);
 				}
@@ -264,7 +264,7 @@ namespace Spine.Unity {
 		}
 
 		public void SetRootMotionBone (string name) {
-			var skeleton = skeletonComponent.Skeleton;
+			Skeleton skeleton = skeletonComponent.Skeleton;
 			Bone bone = skeleton.FindBone(name);
 			if (bone != null) {
 				this.rootMotionBoneIndex = bone.Data.Index;
@@ -328,7 +328,7 @@ namespace Spine.Unity {
 				endPos = TimelineExtensions.Evaluate(xTimeline, yTimeline, endTime);
 				startPos = TimelineExtensions.Evaluate(xTimeline, yTimeline, startTime);
 			}
-			var transformConstraintsItems = skeletonComponent.Skeleton.TransformConstraints.Items;
+			TransformConstraint[] transformConstraintsItems = skeletonComponent.Skeleton.TransformConstraints.Items;
 			foreach (int constraintIndex in this.transformConstraintIndices) {
 				TransformConstraint constraint = transformConstraintsItems[constraintIndex];
 				ApplyConstraintToPos(animation, constraint, constraintIndex, endTime, false, ref endPos);
@@ -377,7 +377,7 @@ namespace Spine.Unity {
 				endRotation = rotateTimeline.Evaluate(endTime);
 				startRotation = rotateTimeline.Evaluate(startTime);
 			}
-			var transformConstraintsItems = skeletonComponent.Skeleton.TransformConstraints.Items;
+			TransformConstraint[] transformConstraintsItems = skeletonComponent.Skeleton.TransformConstraints.Items;
 			foreach (int constraintIndex in this.transformConstraintIndices) {
 				TransformConstraint constraint = transformConstraintsItems[constraintIndex];
 				ApplyConstraintToRotation(animation, constraint, constraintIndex, endTime, false, ref endRotation);
@@ -482,14 +482,13 @@ namespace Spine.Unity {
 		}
 
 		int GetConstraintLastPosIndex (int constraintIndex) {
-			var constraints = skeletonComponent.Skeleton.TransformConstraints;
-			TransformConstraint targetConstraint = constraints.Items[constraintIndex];
+			ExposedList<TransformConstraint> constraints = skeletonComponent.Skeleton.TransformConstraints;
 			return transformConstraintIndices.FindIndex(addedIndex => addedIndex == constraintIndex);
 		}
 
 		void FindTransformConstraintsAffectingBone () {
-			var constraints = skeletonComponent.Skeleton.TransformConstraints;
-			var constraintsItems = constraints.Items;
+			ExposedList<TransformConstraint> constraints = skeletonComponent.Skeleton.TransformConstraints;
+			TransformConstraint[] constraintsItems = constraints.Items;
 			for (int i = 0, n = constraints.Count; i < n; ++i) {
 				TransformConstraint constraint = constraintsItems[i];
 				if (constraint.Bones.Contains(rootMotionBone)) {
@@ -522,8 +521,8 @@ namespace Spine.Unity {
 
 		void GatherTopLevelBones () {
 			topLevelBones.Clear();
-			var skeleton = skeletonComponent.Skeleton;
-			foreach (var bone in skeleton.Bones) {
+			Skeleton skeleton = skeletonComponent.Skeleton;
+			foreach (Bone bone in skeleton.Bones) {
 				if (bone.Parent == null)
 					topLevelBones.Add(bone);
 			}
@@ -600,7 +599,7 @@ namespace Spine.Unity {
 			rootMotionBone.AX = rootMotionBone.X;
 			rootMotionBone.AY = rootMotionBone.Y;
 			rootMotionBone.AppliedRotation = rootMotionBone.Rotation;
-			var transformConstraintsItems = skeletonComponent.Skeleton.TransformConstraints.Items;
+			TransformConstraint[] transformConstraintsItems = skeletonComponent.Skeleton.TransformConstraints.Items;
 			foreach (int constraintIndex in this.transformConstraintIndices) {
 				TransformConstraint constraint = transformConstraintsItems[constraintIndex];
 				// apply the constraint and sets Bone.ax, Bone.ay and Bone.arotation values.
@@ -616,7 +615,7 @@ namespace Spine.Unity {
 		}
 
 		Vector2 GetScaleAffectingRootMotion (out Vector2 parentBoneScale) {
-			var skeleton = skeletonComponent.Skeleton;
+			Skeleton skeleton = skeletonComponent.Skeleton;
 			Vector2 totalScale = Vector2.one;
 			totalScale.x *= skeleton.ScaleX;
 			totalScale.y *= skeleton.ScaleY;
@@ -661,8 +660,8 @@ namespace Spine.Unity {
 			ApplyTransformConstraints();
 
 			// Move top level bones in opposite direction of the root motion bone
-			var skeleton = skeletonComponent.Skeleton;
-			foreach (var topLevelBone in topLevelBones) {
+			Skeleton skeleton = skeletonComponent.Skeleton;
+			foreach (Bone topLevelBone in topLevelBones) {
 				if (topLevelBone == rootMotionBone) {
 					if (transformPositionX) topLevelBone.X = displacementSkeletonSpace.x / skeleton.ScaleX;
 					if (transformPositionY) topLevelBone.Y = displacementSkeletonSpace.y / skeleton.ScaleY;

@@ -1,0 +1,21 @@
+{
+    "name": "Authentication",
+    "rootNamespace": "Authentication",
+    "references": [
+        "GUID:1c91b2bcb0fb84a7097f5062974c1431",
+        "GUID:fe25561d224ed4743af4c60938a59d0b",
+        "GUID:18299ae3367e54facaf234d6fdef478c",
+        "GUID:99181dd7322bda34296fa3af911731db",
+        "GUID:6793dbd94a12ed146965411768bc4acd",
+        "GUID:733238ac2c2678b4f9e4bf145e79c2dd"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

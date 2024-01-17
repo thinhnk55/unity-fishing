@@ -23,3 +23,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2b023ade646bf9444b7009189f273576, type: 3}
   - {fileID: 21300000, guid: eaf6535481fbbd347a9020ec77be4e13, type: 3}
   - {fileID: 21300000, guid: 77c64187c94746542b6f3113f6c70824, type: 3}
+  - {fileID: 21300000, guid: f697391966897fc46812012ff9bba33b, type: 3}
+  - {fileID: 21300000, guid: df061e30ef486094bbd9a8e1cfb3f819, type: 3}
+  - {fileID: 21300000, guid: 4719c7cfa94ab5c47aba118f7053b338, type: 3}
+  - {fileID: 21300000, guid: b4a8d5b86a2c87e42a8da73d70afb34a, type: 3}
+  - {fileID: 21300000, guid: 5273f2514db699d45a5563d975e5b951, type: 3}
+  - {fileID: 21300000, guid: 7da65b43710a5f34cbe7ecd289b73231, type: 3}
+  - {fileID: 21300000, guid: 315dc9e5f9739bd4398d13d12978892c, type: 3}
+  itemSprites: []

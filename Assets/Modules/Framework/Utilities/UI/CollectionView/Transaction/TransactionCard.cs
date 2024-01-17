@@ -1,4 +1,3 @@
-using Framework.SimpleJSON;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,18 +9,11 @@ namespace Framework
     }
     public class TransactionInfo : IDataUnit<TransactionInfo>
     {
-        public int Id { get; set; }
+        public int Index { get; set; }
         public TransactionType TransactionType;
         public List<ResourceInfo> Payments;
         public List<ResourceInfo> Payoffs;
 
-        public TransactionInfo FromJson(JSONNode data)
-        {
-            TransactionInfo transactionInfo = new TransactionInfo
-            {
-            };
-            return transactionInfo;
-        }
         public void Transact()
         {
             for (int i = 0; i < Payments.Count; i++)
@@ -57,13 +49,13 @@ namespace Framework
         [SerializeField] protected ResourceCollectionView paymentView;
         [SerializeField] protected ResourceCollectionView payoffView;
 
-        public override void BuildUI(TransactionInfo info)
+        public override void BuildView(TransactionInfo info)
         {
-            base.BuildUI(info);
+            base.BuildView(info);
             if (paymentView) paymentView.BuildView(info.Payments);
             if (payoffView) payoffView.BuildView(info.Payoffs);
-            if (paymentCard) paymentCard.BuildUI(info.Payments.First());
-            if (payoffCard) payoffCard.BuildUI(info.Payoffs.First());
+            if (paymentCard) paymentCard.BuildView(info.Payments.First());
+            if (payoffCard) payoffCard.BuildView(info.Payoffs.First());
         }
 
         protected override void Card_OnClicked()

@@ -1,16 +1,16 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated September 24, 2021. Replaces all prior versions.
+ * Last updated July 28, 2023. Replaces all prior versions.
  *
- * Copyright (c) 2013-2021, Esoteric Software LLC
+ * Copyright (c) 2013-2023, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
  * conditions of Section 2 of the Spine Editor License Agreement:
  * http://esotericsoftware.com/spine-editor-license
  *
- * Otherwise, it is permitted to integrate the Spine Runtimes into software
- * or otherwise create derivative works of the Spine Runtimes (collectively,
+ * Otherwise, it is permitted to integrate the Spine Runtimes into software or
+ * otherwise create derivative works of the Spine Runtimes (collectively,
  * "Products"), provided that each user of the Products must obtain their own
  * Spine Editor license and redistribution of the Products in any form must
  * include this license and copyright notice.
@@ -23,8 +23,8 @@
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES,
  * BUSINESS INTERRUPTION, OR LOSS OF USE, DATA, OR PROFITS) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THE
+ * SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
 using System;
@@ -38,7 +38,6 @@ namespace Spine {
 		internal ExposedList<IkConstraint> ikConstraints;
 		internal ExposedList<TransformConstraint> transformConstraints;
 		internal ExposedList<PathConstraint> pathConstraints;
-		internal ExposedList<SpringConstraint> springConstraints;
 		internal ExposedList<IUpdatable> updateCache = new ExposedList<IUpdatable>();
 		internal Skin skin;
 		internal float r = 1, g = 1, b = 1, a = 1;
@@ -52,7 +51,6 @@ namespace Spine {
 		public ExposedList<Slot> DrawOrder { get { return drawOrder; } }
 		public ExposedList<IkConstraint> IkConstraints { get { return ikConstraints; } }
 		public ExposedList<PathConstraint> PathConstraints { get { return pathConstraints; } }
-		public ExposedList<SpringConstraint> SpringConstraints { get { return SpringConstraints; } }
 		public ExposedList<TransformConstraint> TransformConstraints { get { return transformConstraints; } }
 
 		public Skin Skin {
@@ -120,10 +118,6 @@ namespace Spine {
 			foreach (PathConstraintData pathConstraintData in data.pathConstraints)
 				pathConstraints.Add(new PathConstraint(pathConstraintData, this));
 
-			springConstraints = new ExposedList<SpringConstraint>(data.springConstraints.Count);
-			foreach (SpringConstraintData springConstraintData in data.springConstraints)
-				springConstraints.Add(new SpringConstraint(springConstraintData, this));
-
 			UpdateCache();
 		}
 
@@ -169,10 +163,6 @@ namespace Spine {
 			foreach (PathConstraint pathConstraint in skeleton.pathConstraints)
 				pathConstraints.Add(new PathConstraint(pathConstraint, this));
 
-			springConstraints = new ExposedList<SpringConstraint>(skeleton.springConstraints.Count);
-			foreach (SpringConstraint springConstraint in skeleton.springConstraints)
-				springConstraints.Add(new SpringConstraint(springConstraint, this));
-
 			skin = skeleton.skin;
 			r = skeleton.r;
 			g = skeleton.g;
@@ -187,7 +177,7 @@ namespace Spine {
 		/// <summary>Caches information about bones and constraints. Must be called if the <see cref="Skin"/> is modified or if bones, constraints, or
 		/// constraints, or weighted path attachments are added or removed.</summary>
 		public void UpdateCache () {
-			var updateCache = this.updateCache;
+			ExposedList<IUpdatable> updateCache = this.updateCache;
 			updateCache.Clear();
 
 			int boneCount = this.bones.Count;
@@ -200,7 +190,7 @@ namespace Spine {
 			if (skin != null) {
 				BoneData[] skinBones = skin.bones.Items;
 				for (int i = 0, n = skin.bones.Count; i < n; i++) {
-					var bone = bones[skinBones[i].index];
+					Bone bone = bones[skinBones[i].index];
 					do {
 						bone.sorted = false;
 						bone.active = true;
@@ -209,13 +199,11 @@ namespace Spine {
 				}
 			}
 
-			int ikCount = this.ikConstraints.Count, transformCount = this.transformConstraints.Count, pathCount = this.pathConstraints.Count,
-				springCount = this.springConstraints.Count;
+			int ikCount = this.ikConstraints.Count, transformCount = this.transformConstraints.Count, pathCount = this.pathConstraints.Count;
 			IkConstraint[] ikConstraints = this.ikConstraints.Items;
 			TransformConstraint[] transformConstraints = this.transformConstraints.Items;
 			PathConstraint[] pathConstraints = this.pathConstraints.Items;
-			SpringConstraint[] springConstraints = this.springConstraints.Items;
-			int constraintCount = ikCount + transformCount + pathCount + springCount;
+			int constraintCount = ikCount + transformCount + pathCount;
 			for (int i = 0; i < constraintCount; i++) {
 				for (int ii = 0; ii < ikCount; ii++) {
 					IkConstraint constraint = ikConstraints[ii];
@@ -238,13 +226,6 @@ namespace Spine {
 						goto continue_outer;
 					}
 				}
-				for (int ii = 0; ii < springCount; ii++) {
-					SpringConstraint constraint = springConstraints[ii];
-					if (constraint.data.order == i) {
-						SortSpringConstraint(constraint);
-						goto continue_outer;
-					}
-				}
 				continue_outer: { }
 			}
 
@@ -260,7 +241,7 @@ namespace Spine {
 			Bone target = constraint.target;
 			SortBone(target);
 
-			var constrained = constraint.bones;
+			ExposedList<Bone> constrained = constraint.bones;
 			Bone parent = constrained.Items[0];
 			SortBone(parent);
 
@@ -285,7 +266,7 @@ namespace Spine {
 
 			SortBone(constraint.target);
 
-			var constrained = constraint.bones.Items;
+			Bone[] constrained = constraint.bones.Items;
 			int boneCount = constraint.bones.Count;
 			if (constraint.data.local) {
 				for (int i = 0; i < boneCount; i++) {
@@ -321,7 +302,7 @@ namespace Spine {
 			Attachment attachment = slot.attachment;
 			if (attachment is PathAttachment) SortPathConstraintAttachment(attachment, slotBone);
 
-			var constrained = constraint.bones.Items;
+			Bone[] constrained = constraint.bones.Items;
 			int boneCount = constraint.bones.Count;
 			for (int i = 0; i < boneCount; i++)
 				SortBone(constrained[i]);
@@ -335,7 +316,7 @@ namespace Spine {
 		}
 
 		private void SortPathConstraintAttachment (Skin skin, int slotIndex, Bone slotBone) {
-			foreach (var entry in skin.Attachments)
+			foreach (Skin.SkinEntry entry in skin.Attachments)
 				if (entry.SlotIndex == slotIndex) SortPathConstraintAttachment(entry.Attachment, slotBone);
 		}
 
@@ -345,7 +326,7 @@ namespace Spine {
 			if (pathBones == null)
 				SortBone(slotBone);
 			else {
-				var bones = this.bones.Items;
+				Bone[] bones = this.bones.Items;
 				for (int i = 0, n = pathBones.Length; i < n;) {
 					int nn = pathBones[i++];
 					nn += i;
@@ -353,23 +334,6 @@ namespace Spine {
 						SortBone(bones[pathBones[i++]]);
 				}
 			}
-		}
-
-		private void SortSpringConstraint (SpringConstraint constraint) {
-			constraint.active = !constraint.data.skinRequired || (skin != null && skin.constraints.Contains(constraint.data));
-			if (!constraint.active) return;
-
-			Object[] constrained = constraint.bones.Items;
-			int boneCount = constraint.bones.Count;
-			for (int i = 0; i < boneCount; i++)
-				SortBone((Bone)constrained[i]);
-
-			updateCache.Add(constraint);
-
-			for (int i = 0; i < boneCount; i++)
-				SortReset(((Bone)constrained[i]).children);
-			for (int i = 0; i < boneCount; i++)
-				((Bone)constrained[i]).sorted = true;
 		}
 
 		private void SortBone (Bone bone) {
@@ -409,7 +373,7 @@ namespace Spine {
 				bone.ashearY = bone.shearY;
 			}
 
-			var updateCache = this.updateCache.Items;
+			IUpdatable[] updateCache = this.updateCache.Items;
 			for (int i = 0, n = this.updateCache.Count; i < n; i++)
 				updateCache[i].Update();
 		}
@@ -438,9 +402,9 @@ namespace Spine {
 			rootBone.d = (pc * lb + pd * ld) * scaleY;
 
 			// Update everything except root bone.
-			var updateCache = this.updateCache.Items;
+			IUpdatable[] updateCache = this.updateCache.Items;
 			for (int i = 0, n = this.updateCache.Count; i < n; i++) {
-				var updatable = updateCache[i];
+				IUpdatable updatable = updateCache[i];
 				if (updatable != rootBone) updatable.Update();
 			}
 		}
@@ -453,7 +417,7 @@ namespace Spine {
 
 		/// <summary>Sets the bones and constraints to their setup pose values.</summary>
 		public void SetBonesToSetupPose () {
-			var bones = this.bones.Items;
+			Bone[] bones = this.bones.Items;
 			for (int i = 0, n = this.bones.Count; i < n; i++)
 				bones[i].SetToSetupPose();
 
@@ -490,24 +454,10 @@ namespace Spine {
 				constraint.mixX = data.mixX;
 				constraint.mixY = data.mixY;
 			}
-
-			SpringConstraint[] springConstraints = this.springConstraints.Items;
-			for (int i = 0, n = this.springConstraints.Count; i < n; i++) {
-				SpringConstraint constraint = springConstraints[i];
-				SpringConstraintData data = constraint.data;
-				constraint.mix = data.mix;
-				constraint.friction = data.friction;
-				constraint.gravity = data.gravity;
-				constraint.wind = data.wind;
-				constraint.stiffness = data.stiffness;
-				constraint.damping = data.damping;
-				constraint.rope = data.rope;
-				constraint.stretch = data.stretch;
-			}
 		}
 
 		public void SetSlotsToSetupPose () {
-			var slots = this.slots.Items;
+			Slot[] slots = this.slots.Items;
 			int n = this.slots.Count;
 			Array.Copy(slots, 0, drawOrder.Items, 0, n);
 			for (int i = 0; i < n; i++)
@@ -519,7 +469,7 @@ namespace Spine {
 		/// <returns>May be null.</returns>
 		public Bone FindBone (string boneName) {
 			if (boneName == null) throw new ArgumentNullException("boneName", "boneName cannot be null.");
-			var bones = this.bones.Items;
+			Bone[] bones = this.bones.Items;
 			for (int i = 0, n = this.bones.Count; i < n; i++) {
 				Bone bone = bones[i];
 				if (bone.data.name == boneName) return bone;
@@ -532,7 +482,7 @@ namespace Spine {
 		/// <returns>May be null.</returns>
 		public Slot FindSlot (string slotName) {
 			if (slotName == null) throw new ArgumentNullException("slotName", "slotName cannot be null.");
-			var slots = this.slots.Items;
+			Slot[] slots = this.slots.Items;
 			for (int i = 0, n = this.slots.Count; i < n; i++) {
 				Slot slot = slots[i];
 				if (slot.data.name == slotName) return slot;
@@ -540,7 +490,7 @@ namespace Spine {
 			return null;
 		}
 
-		/// <summary>Sets a skin by name (<see cref="SetSkin(Skin)"/>).</summary>
+		/// <summary>Sets a skin by name (see <see cref="SetSkin(Skin)"/>).</summary>
 		public void SetSkin (string skinName) {
 			Skin foundSkin = data.FindSkin(skinName);
 			if (foundSkin == null) throw new ArgumentException("Skin not found: " + skinName, "skinName");
@@ -623,7 +573,7 @@ namespace Spine {
 		/// <returns>May be null.</returns>
 		public IkConstraint FindIkConstraint (string constraintName) {
 			if (constraintName == null) throw new ArgumentNullException("constraintName", "constraintName cannot be null.");
-			var ikConstraints = this.ikConstraints.Items;
+			IkConstraint[] ikConstraints = this.ikConstraints.Items;
 			for (int i = 0, n = this.ikConstraints.Count; i < n; i++) {
 				IkConstraint ikConstraint = ikConstraints[i];
 				if (ikConstraint.data.name == constraintName) return ikConstraint;
@@ -636,7 +586,7 @@ namespace Spine {
 		/// <returns>May be null.</returns>
 		public TransformConstraint FindTransformConstraint (string constraintName) {
 			if (constraintName == null) throw new ArgumentNullException("constraintName", "constraintName cannot be null.");
-			var transformConstraints = this.transformConstraints.Items;
+			TransformConstraint[] transformConstraints = this.transformConstraints.Items;
 			for (int i = 0, n = this.transformConstraints.Count; i < n; i++) {
 				TransformConstraint transformConstraint = transformConstraints[i];
 				if (transformConstraint.data.Name == constraintName) return transformConstraint;
@@ -649,23 +599,10 @@ namespace Spine {
 		/// <returns>May be null.</returns>
 		public PathConstraint FindPathConstraint (string constraintName) {
 			if (constraintName == null) throw new ArgumentNullException("constraintName", "constraintName cannot be null.");
-			var pathConstraints = this.pathConstraints.Items;
+			PathConstraint[] pathConstraints = this.pathConstraints.Items;
 			for (int i = 0, n = this.pathConstraints.Count; i < n; i++) {
 				PathConstraint constraint = pathConstraints[i];
 				if (constraint.data.Name.Equals(constraintName)) return constraint;
-			}
-			return null;
-		}
-
-		/// <summary>Finds a spring constraint by comparing each spring constraint's name. It is more efficient to cache the results of this
-		/// method than to call it repeatedly.</summary>
-		/// <returns>May be null.</returns>
-		public SpringConstraint FindSpringConstraint (String constraintName) {
-			if (constraintName == null) throw new ArgumentNullException("constraintName", "constraintName cannot be null.");
-			SpringConstraint[] springConstraints = this.springConstraints.Items;
-			for (int i = 0, n = this.springConstraints.Count; i < n; i++) {
-				SpringConstraint constraint = springConstraints[i];
-				if (constraint.data.name.Equals(constraintName)) return constraint;
 			}
 			return null;
 		}
@@ -679,7 +616,7 @@ namespace Spine {
 		public void GetBounds (out float x, out float y, out float width, out float height, ref float[] vertexBuffer) {
 			float[] temp = vertexBuffer;
 			temp = temp ?? new float[8];
-			var drawOrder = this.drawOrder.Items;
+			Slot[] drawOrder = this.drawOrder.Items;
 			float minX = int.MaxValue, minY = int.MaxValue, maxX = int.MinValue, maxY = int.MinValue;
 			for (int i = 0, n = this.drawOrder.Count; i < n; i++) {
 				Slot slot = drawOrder[i];
@@ -694,9 +631,8 @@ namespace Spine {
 					if (vertices.Length < 8) vertices = temp = new float[8];
 					region.ComputeWorldVertices(slot, temp, 0, 2);
 				} else {
-					var meshAttachment = attachment as MeshAttachment;
-					if (meshAttachment != null) {
-						MeshAttachment mesh = meshAttachment;
+					MeshAttachment mesh = attachment as MeshAttachment;
+					if (mesh != null) {
 						verticesLength = mesh.WorldVerticesLength;
 						vertices = temp;
 						if (vertices.Length < verticesLength) vertices = temp = new float[verticesLength];

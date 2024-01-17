@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aef92dd8a79bc6c429ba92b7c6491b08, type: 3}
   m_Name: FontFactory
   m_EditorClassIdentifier: 
+  fontDefault: {fileID: 11400000, guid: fb90e9e8048435f44b75998376764fa1, type: 2}

@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 namespace Framework
@@ -7,8 +8,22 @@ namespace Framework
     {
         Loading,
         Auth,
+        Intro,
         Home,
-        CoreIngame,
+        GameHome,
+        LearnHome,
+        Phonics,
+        CrossWord,
+        FlashCard,
+        ScrambleWord,
+        FlashphraseScramble,
+        Matching,
+        MemoryCard,
+        SelectLevelMemory,
+        EmbededVideo,
+        Fishing,
+        Coloring,
+        Null
     }
     public abstract class SceneTransitionBase<T> : HardSingletonMono<T> where T : CacheMonoBehaviour
     {
@@ -23,9 +38,9 @@ namespace Framework
             // Playing fade out animation
             FadeOut,
         }
-
         // Index of scene will be loaded
-        ESceneName eSceneValue = ESceneName.Home; public ESceneName ESceneValue { get => eSceneValue; }
+        ESceneName eSceneValue = ESceneName.Null; public ESceneName ESceneValue { get=> eSceneValue; }
+        ESceneName previousSceneName = ESceneName.Null;
         // Scene async
         AsyncOperation _sceneAsync;
         // State machine
@@ -35,6 +50,7 @@ namespace Framework
         protected Callback _fadein;
         protected Callback _fadeout;
         public Callback OnLoaded;
+        public IEnumerator LoadingTask;
 
         #region MonoBehaviour
 
@@ -55,7 +71,7 @@ namespace Framework
             _tween?.Kill();
         }
 
-        void Update()
+        protected virtual void Update()
         {
             _stateMachine.Update();
         }
@@ -76,7 +92,10 @@ namespace Framework
             _tween?.Kill();
             _tween = DOVirtual.DelayedCall(SceneTransitionConfigSO.FadeInDuration + SceneTransitionConfigSO.LoadDuration, () =>
             {
-                _stateMachine.CurrentState = State.Loading;
+                if (CacheGameObject.activeSelf)
+                    _stateMachine.CurrentState = State.Loading;
+                else
+                    _stateMachine.CurrentState = State.FadeOut;
                 _sceneAsync.allowSceneActivation = true;
             }, true);
         }
@@ -88,12 +107,30 @@ namespace Framework
                 _stateMachine.CurrentState = State.FadeOut;
             }
         }
-
         void State_OnFadeOutStart()
         {
+            if (gameObject.activeInHierarchy)
+                StartCoroutine(State_OnFadeOutStart_Task());
+            else
+            {
+                //Play fade out tween
+                FadeOut();
+                //Wait until animation is end
+                _tween?.Kill();
+                _tween = DOVirtual.DelayedCall(SceneTransitionConfigSO.FadeOutDuration, () =>
+                {
+                    _stateMachine.CurrentState = State.Idle;
+                    CacheGameObject.SetActive(false);
+                    OnLoaded?.Invoke();
+                }, true);
+            }
+        }
+        IEnumerator State_OnFadeOutStart_Task()
+        {
+            yield return LoadingTask;
+            LoadingTask = null;
             //Play fade out tween
             FadeOut();
-
             //Wait until animation is end
             _tween?.Kill();
             _tween = DOVirtual.DelayedCall(SceneTransitionConfigSO.FadeOutDuration, () =>
@@ -111,54 +148,67 @@ namespace Framework
         #endregion
 
         #region Public
-        public void Load(ESceneName eSceneValue, bool loadingObject)
+        public void Load(ESceneName eSceneValue, bool showLoadingScene)
         {
+            if (eSceneValue == ESceneName.Null) return;
             if (_stateMachine.CurrentState != State.Idle)
             {
                 PDebug.Log("[{0}] A scene is loading, can't execute load scene command!", typeof(SceneTransitionBase<T>));
                 return;
             }
 
-            if (loadingObject)
+            if (showLoadingScene)
                 CacheGameObject.SetActive(true);
-
+            if(this.eSceneValue != ESceneName.Loading) previousSceneName = this.eSceneValue;
             this.eSceneValue = eSceneValue;
             _stateMachine.CurrentState = State.FadeIn;
         }
-        public void Reload(bool loadingObject)
+        public void Reload(bool showLoadingScene)
         {
-            Load(eSceneValue, loadingObject);
+            Load(eSceneValue, showLoadingScene);
+        }
+
+        public void LoadPreviousScene(bool showLoadingScene)
+        {
+            Load(previousSceneName, showLoadingScene);
         }
 
         public void Construct()
         {
             // Construct state machine
-
             //_fadein += ()=> gameObject.SetChildrenRecursively<Image>((img) => { img.DOFade(1, SceneTransitionConfigSO.FadeInDuration); });
             //_fadeout += ()=> GetComponent<Image>().DOFade(0,SceneTransitionConfigSO.FadeOutDuration);
         }
-
         #endregion
     }
-
     public static class SceneTransitionHelper
     {
         public static SceneTransitionBase<SceneTransition> _instance;
-
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void LazyInit()
         {
-            SceneTransition.SafeInstance.enabled = true;
+            if (_instance == null)
+            {
+                _instance = SceneTransitionConfigSO.ObjSceneTransition.Create().GetComponent<SceneTransition>();
+                _instance.Construct();
+                GameObject.DontDestroyOnLoad(_instance.CacheGameObject);
+            }
         }
-        public static void Load(ESceneName eSceneValue, bool loadingObject)
+        public static void Load(ESceneName eSceneValue, bool showLoadingScene)
         {
             LazyInit();
-            _instance.Load(eSceneValue, loadingObject);
+            _instance.Load(eSceneValue, showLoadingScene);
         }
-        public static void Reload(bool loadingObject)
+        public static void Reload(bool showLoadingScene)
         {
             LazyInit();
-            _instance.Reload(loadingObject);
+            _instance.Reload(showLoadingScene);
+        }
+
+        public static void LoadPreviousScene(bool showLoadingScene)
+        {
+            LazyInit();
+            _instance.LoadPreviousScene(showLoadingScene);
         }
     }
 }

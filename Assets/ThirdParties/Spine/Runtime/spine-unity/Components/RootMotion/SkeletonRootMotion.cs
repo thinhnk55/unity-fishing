@@ -1,16 +1,16 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated September 24, 2021. Replaces all prior versions.
+ * Last updated July 28, 2023. Replaces all prior versions.
  *
- * Copyright (c) 2013-2021, Esoteric Software LLC
+ * Copyright (c) 2013-2023, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
  * conditions of Section 2 of the Spine Editor License Agreement:
  * http://esotericsoftware.com/spine-editor-license
  *
- * Otherwise, it is permitted to integrate the Spine Runtimes into software
- * or otherwise create derivative works of the Spine Runtimes (collectively,
+ * Otherwise, it is permitted to integrate the Spine Runtimes into software or
+ * otherwise create derivative works of the Spine Runtimes (collectively,
  * "Products"), provided that each user of the Products must obtain their own
  * Spine Editor license and redistribution of the Products in any form must
  * include this license and copyright notice.
@@ -23,8 +23,8 @@
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES,
  * BUSINESS INTERRUPTION, OR LOSS OF USE, DATA, OR PROFITS) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THE
+ * SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
 using Spine.Unity.AnimationTools;
@@ -54,14 +54,14 @@ namespace Spine.Unity {
 		#endregion
 
 		AnimationState animationState;
-		Canvas canvas;
+		SkeletonGraphic skeletonGraphic;
 
 		public override Vector2 GetRemainingRootMotion (int trackIndex) {
 			TrackEntry track = animationState.GetCurrent(trackIndex);
 			if (track == null)
 				return Vector2.zero;
 
-			var animation = track.Animation;
+			Animation animation = track.Animation;
 			float start = track.AnimationTime;
 			float end = animation.Duration;
 			return GetAnimationRootMotion(start, end, animation);
@@ -72,14 +72,14 @@ namespace Spine.Unity {
 			if (track == null)
 				return new RootMotionInfo();
 
-			var animation = track.Animation;
+			Animation animation = track.Animation;
 			float time = track.AnimationTime;
 			return GetAnimationRootMotionInfo(track.Animation, time);
 		}
 
 		protected override float AdditionalScale {
 			get {
-				return canvas ? canvas.referencePixelsPerUnit : 1.0f;
+				return skeletonGraphic ? skeletonGraphic.MeshScale : 1.0f;
 			}
 		}
 
@@ -90,12 +90,10 @@ namespace Spine.Unity {
 
 		protected override void Start () {
 			base.Start();
-			var animstateComponent = skeletonComponent as IAnimationStateComponent;
+			IAnimationStateComponent animstateComponent = skeletonComponent as IAnimationStateComponent;
 			this.animationState = (animstateComponent != null) ? animstateComponent.AnimationState : null;
 
-			if (this.GetComponent<CanvasRenderer>() != null) {
-				canvas = this.GetComponentInParent<Canvas>();
-			}
+			skeletonGraphic = this.GetComponent<SkeletonGraphic>();
 		}
 
 		protected override Vector2 CalculateAnimationsMovementDelta () {
@@ -111,10 +109,10 @@ namespace Spine.Unity {
 				TrackEntry track = animationState.GetCurrent(trackIndex);
 				TrackEntry next = null;
 				while (track != null) {
-					var animation = track.Animation;
+					Animation animation = track.Animation;
 					float start = track.AnimationLast;
 					float end = track.AnimationTime;
-					var currentDelta = GetAnimationRootMotion(start, end, animation);
+					Vector2 currentDelta = GetAnimationRootMotion(start, end, animation);
 					if (currentDelta != Vector2.zero) {
 						ApplyMixAlphaToDelta(ref currentDelta, next, track);
 						localDelta += currentDelta;
@@ -141,10 +139,10 @@ namespace Spine.Unity {
 				TrackEntry track = animationState.GetCurrent(trackIndex);
 				TrackEntry next = null;
 				while (track != null) {
-					var animation = track.Animation;
+					Animation animation = track.Animation;
 					float start = track.AnimationLast;
 					float end = track.AnimationTime;
-					var currentDelta = GetAnimationRootMotionRotation(start, end, animation);
+					float currentDelta = GetAnimationRootMotionRotation(start, end, animation);
 					if (currentDelta != 0) {
 						ApplyMixAlphaToDelta(ref currentDelta, next, track);
 						localDelta += currentDelta;

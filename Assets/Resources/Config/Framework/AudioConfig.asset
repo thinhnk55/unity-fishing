@@ -1,0 +1,168 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af2fbf75a1b127943841d210e0e96701, type: 3}
+  m_Name: AudioConfig
+  m_EditorClassIdentifier: 
+  musicConfigs:
+    keyData: 0000000001000000
+    valueData:
+    - type: 0
+      clipConfig:
+        clip: {fileID: 8300000, guid: 8b3bc35b4e6f6e24ab07d342a8dea2d9, type: 3}
+        volumn: 1
+    - type: 1
+      clipConfig:
+        clip: {fileID: 8300000, guid: 937b73266c233404eadcec9571fa65ce, type: 3}
+        volumn: 1
+  soundConfigs:
+    keyData: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
+    valueData:
+    - type: 0
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 66fd5dc02fae02348a5514fc4983eb00, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 1
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: a0a15e07ffcf5024a820f84de5486a87, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 2
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 838258cfdddbd6f489b3ad9bed10c197, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 3
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 0d00decde4e823644bda0eeeb1b44aeb, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 4
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 696b6354d5da1c74a974a658df36de42, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 5
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 207ec4d975f8491459d0e73c00157980, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 6
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 9bf47151e44df4844ac9f096c7c3b796, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 1
+    - type: 7
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 8ec0c7f50cdb5d44288df4041ea3e33f, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 8
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 41407863b16db7642bc0c2c588880e52, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 9
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: c4ebebbe0ced73041b118bb8694c19eb, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 10
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 154915fee519212429873bd0bcb6767f, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 11
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 74a6e1f47383c454686fcf3d8e57f2ff, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 12
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 5bd2de6daf1ab214cad6edc6fc0a4855, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 13
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 6931a49af57c1864a80707944e089e7f, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 14
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 2880ad54107d15a458ccfcfc6daf7725, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 15
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: e2a5c2a480d27af4cb08ec2c0cff7bd0, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 16
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: e67e6282be803914f8a8ea77cbdde0c5, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 17
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: cfd7e1d954bc35048b7e790ccfabdc16, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 18
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 0f9497cfac9af414bbcdcc49c6f62f57, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0
+    - type: 19
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: baa86e757697f1448a18584bacae8ac6, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 0

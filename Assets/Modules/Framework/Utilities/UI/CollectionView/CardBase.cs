@@ -2,18 +2,22 @@ using UnityEngine;
 
 namespace Framework
 {
-    public abstract class CardBase<T> : CacheMonoBehaviour where T : IDataUnit<T>
+    public interface ICard<T> where T : IDataUnit<T>
     {
-        protected T Info;
+        void BuildView(T info);
+    }
+    public abstract class CardBase<T> : CacheMonoBehaviour, ICard<T> where T : IDataUnit<T>
+    {
+        protected T info; public T Info { get { return info; } }
         [HideInInspector] public CollectionViewBase<T> View;
-        public virtual void BuildUI(T info)
+        public virtual void BuildView(T info)
         {
-            this.Info = info;
+            this.info = info;
         }
-        public void BuildUI(T info, CollectionViewBase<T> collectionView)
+        public void BuildView(T info, CollectionViewBase<T> collectionView)
         {
             this.View = collectionView;
-            BuildUI(info);
+            BuildView(info);
         }
     }
 }

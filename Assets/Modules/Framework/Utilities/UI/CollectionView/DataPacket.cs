@@ -4,8 +4,7 @@ namespace Framework
 {
     public interface IDataUnit<T>
     {
-        public int Id { get; set; }
-        public T FromJson(JSONNode json);
+        public int Index { get; set; }
     }
     public interface IEntity<T>
     {

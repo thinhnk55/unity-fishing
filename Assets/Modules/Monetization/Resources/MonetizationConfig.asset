@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a05778c44bfd0440a1d2f0d050a3b86, type: 3}
   m_Name: MonetizationConfig
   m_EditorClassIdentifier: 
-  sdkKey: 
+  sdkKey: UKWZAxcKpAgfGL6g24CQrIeT5NGRriC9IJEHkdkazhssULzMnp3FU8AXUmBEc8bK__vyFun2Wgg824lhMEE9_W
   bannerAdsIdAndroid: 
   bannerAdsIdIOS: 
   interstialAdsIdAndroid: 

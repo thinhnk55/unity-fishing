@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Framework
@@ -16,8 +14,6 @@ namespace Framework
         }
         [SerializeField] private int initCoin; public static int InitCoin { get { return Instance.initCoin; } }
         [SerializeField] private int initGem; public static int InitGem { get { return Instance.initGem; } }
-
-
     }
 
 }

@@ -1,16 +1,16 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated September 24, 2021. Replaces all prior versions.
+ * Last updated July 28, 2023. Replaces all prior versions.
  *
- * Copyright (c) 2013-2021, Esoteric Software LLC
+ * Copyright (c) 2013-2023, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
  * conditions of Section 2 of the Spine Editor License Agreement:
  * http://esotericsoftware.com/spine-editor-license
  *
- * Otherwise, it is permitted to integrate the Spine Runtimes into software
- * or otherwise create derivative works of the Spine Runtimes (collectively,
+ * Otherwise, it is permitted to integrate the Spine Runtimes into software or
+ * otherwise create derivative works of the Spine Runtimes (collectively,
  * "Products"), provided that each user of the Products must obtain their own
  * Spine Editor license and redistribution of the Products in any form must
  * include this license and copyright notice.
@@ -23,8 +23,8 @@
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES,
  * BUSINESS INTERRUPTION, OR LOSS OF USE, DATA, OR PROFITS) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THE
+ * SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
 #if UNITY_2017_2_OR_NEWER
@@ -182,6 +182,9 @@ namespace Spine.Unity.Editor {
 		public bool mecanimEventIncludeFolderName = DEFAULT_MECANIM_EVENT_INCLUDE_FOLDERNAME;
 
 		// Timeline extension module
+		public const bool DEFAULT_TIMELINE_DEFAULT_MIX_DURATION = false;
+		public bool timelineDefaultMixDuration = DEFAULT_TIMELINE_DEFAULT_MIX_DURATION;
+
 		public const bool DEFAULT_TIMELINE_USE_BLEND_DURATION = true;
 		public bool timelineUseBlendDuration = DEFAULT_TIMELINE_USE_BLEND_DURATION;
 
@@ -223,7 +226,7 @@ namespace Spine.Unity.Editor {
 			string[] guids = AssetDatabase.FindAssets(typeSearchString);
 			foreach (string guid in guids) {
 				string path = AssetDatabase.GUIDToAssetPath(guid);
-				var preferences = AssetDatabase.LoadAssetAtPath<SpinePreferences>(path);
+				SpinePreferences preferences = AssetDatabase.LoadAssetAtPath<SpinePreferences>(path);
 				if (preferences != null)
 					return preferences;
 			}
@@ -234,7 +237,7 @@ namespace Spine.Unity.Editor {
 			string blendType, bool isTexturePresetPMA) {
 
 			EditorGUILayout.PropertyField(blendModeMaterialProperty, new GUIContent(blendType + " Material", blendType + " blend mode Material template."));
-			var material = blendModeMaterialProperty.objectReferenceValue as Material;
+			Material material = blendModeMaterialProperty.objectReferenceValue as Material;
 			if (material == null)
 				return;
 
@@ -276,12 +279,12 @@ namespace Spine.Unity.Editor {
 					SpineEditorUtilities.ShaderPropertyField(settings.FindProperty("defaultShader"), new GUIContent("Default Shader"), SpinePreferences.DEFAULT_DEFAULT_SHADER);
 
 					EditorGUILayout.PropertyField(settings.FindProperty("setTextureImporterSettings"), new GUIContent("Apply Atlas Texture Settings", "Apply reference settings for Texture Importers."));
-					var textureSettingsRef = settings.FindProperty("textureSettingsReference");
+					SerializedProperty textureSettingsRef = settings.FindProperty("textureSettingsReference");
 					SpineEditorUtilities.PresetAssetPropertyField(textureSettingsRef, new GUIContent("Atlas Texture Settings", "Apply the selected texture import settings at newly imported atlas textures. When exporting atlas textures from Spine with \"Premultiply alpha\" enabled (the default), you can leave it at \"PMATexturePreset\". If you have disabled \"Premultiply alpha\", set it to \"StraightAlphaTexturePreset\". You can also create your own TextureImporter Preset asset and assign it here."));
 					if (string.IsNullOrEmpty(textureSettingsRef.stringValue)) {
-						var pmaTextureSettingsReferenceGUIDS = AssetDatabase.FindAssets("PMATexturePreset");
+						string[] pmaTextureSettingsReferenceGUIDS = AssetDatabase.FindAssets("PMATexturePreset");
 						if (pmaTextureSettingsReferenceGUIDS.Length > 0) {
-							var assetPath = AssetDatabase.GUIDToAssetPath(pmaTextureSettingsReferenceGUIDS[0]);
+							string assetPath = AssetDatabase.GUIDToAssetPath(pmaTextureSettingsReferenceGUIDS[0]);
 							if (!string.IsNullOrEmpty(assetPath))
 								textureSettingsRef.stringValue = assetPath;
 						}
@@ -323,7 +326,7 @@ namespace Spine.Unity.Editor {
 				EditorGUILayout.LabelField("Handles and Gizmos", EditorStyles.boldLabel);
 				{
 					EditorGUI.BeginChangeCheck();
-					var scaleProperty = settings.FindProperty("handleScale");
+					SerializedProperty scaleProperty = settings.FindProperty("handleScale");
 					EditorGUILayout.PropertyField(scaleProperty, new GUIContent("Editor Bone Scale"));
 					if (EditorGUI.EndChangeCheck()) {
 						EditorPrefs.SetFloat(SpinePreferences.SCENE_ICONS_SCALE_KEY, scaleProperty.floatValue);
@@ -369,6 +372,7 @@ namespace Spine.Unity.Editor {
 				GUILayout.Space(20);
 				EditorGUILayout.LabelField("Timeline Extension", EditorStyles.boldLabel);
 				{
+					EditorGUILayout.PropertyField(settings.FindProperty("timelineDefaultMixDuration"), new GUIContent("Default Mix Duration", "When enabled, the clip uses the default mix duration by default, as specified at the SkeletonDataAsset."));
 					EditorGUILayout.PropertyField(settings.FindProperty("timelineUseBlendDuration"), new GUIContent("Use Blend Duration", "When enabled, MixDuration will be synced with timeline clip transition duration 'Ease In Duration'."));
 				}
 			}

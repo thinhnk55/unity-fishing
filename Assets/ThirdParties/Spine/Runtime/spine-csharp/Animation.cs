@@ -1,16 +1,16 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated September 24, 2021. Replaces all prior versions.
+ * Last updated July 28, 2023. Replaces all prior versions.
  *
- * Copyright (c) 2013-2021, Esoteric Software LLC
+ * Copyright (c) 2013-2023, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
  * conditions of Section 2 of the Spine Editor License Agreement:
  * http://esotericsoftware.com/spine-editor-license
  *
- * Otherwise, it is permitted to integrate the Spine Runtimes into software
- * or otherwise create derivative works of the Spine Runtimes (collectively,
+ * Otherwise, it is permitted to integrate the Spine Runtimes into software or
+ * otherwise create derivative works of the Spine Runtimes (collectively,
  * "Products"), provided that each user of the Products must obtain their own
  * Spine Editor license and redistribution of the Products in any form must
  * include this license and copyright notice.
@@ -23,8 +23,8 @@
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES,
  * BUSINESS INTERRUPTION, OR LOSS OF USE, DATA, OR PROFITS) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THE
+ * SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
 using System;
@@ -66,7 +66,7 @@ namespace Spine {
 			string[] propertyIds = new string[idCount];
 			int currentId = 0;
 			for (int t = 0; t < timelinesCount; ++t) {
-				var ids = timelinesItems[t].PropertyIds;
+				string[] ids = timelinesItems[t].PropertyIds;
 				for (int i = 0, idsLength = ids.Length; i < idsLength; ++i)
 					propertyIds[currentId++] = ids[i];
 			}
@@ -115,7 +115,7 @@ namespace Spine {
 				if (lastTime > 0) lastTime %= duration;
 			}
 
-			var timelines = this.timelines.Items;
+			Timeline[] timelines = this.timelines.Items;
 			for (int i = 0, n = this.timelines.Count; i < n; i++)
 				timelines[i].Apply(skeleton, lastTime, time, events, alpha, blend, direction);
 		}
@@ -1173,7 +1173,7 @@ namespace Spine {
 
 			float[] frames = this.frames;
 			if (time < frames[0]) { // Time is before first frame.
-				var setup = slot.data;
+				SlotData setup = slot.data;
 				switch (blend) {
 				case MixBlend.Setup:
 					slot.r = setup.r;
@@ -1289,7 +1289,7 @@ namespace Spine {
 
 			float[] frames = this.frames;
 			if (time < frames[0]) { // Time is before first frame.
-				var setup = slot.data;
+				SlotData setup = slot.data;
 				switch (blend) {
 				case MixBlend.Setup:
 					slot.r = setup.r;
@@ -1338,7 +1338,7 @@ namespace Spine {
 			} else {
 				float br, bg, bb;
 				if (blend == MixBlend.Setup) {
-					var setup = slot.data;
+					SlotData setup = slot.data;
 					br = setup.r;
 					bg = setup.g;
 					bb = setup.b;
@@ -1377,7 +1377,7 @@ namespace Spine {
 
 			float[] frames = this.frames;
 			if (time < frames[0]) { // Time is before first frame.
-				var setup = slot.data;
+				SlotData setup = slot.data;
 				switch (blend) {
 				case MixBlend.Setup:
 					slot.a = setup.a;
@@ -1869,10 +1869,10 @@ namespace Spine {
 
 			Slot slot = skeleton.slots.Items[slotIndex];
 			if (!slot.bone.active) return;
-			var vertexAttachment = slot.attachment as VertexAttachment;
+			VertexAttachment vertexAttachment = slot.attachment as VertexAttachment;
 			if (vertexAttachment == null || vertexAttachment.TimelineAttachment != attachment) return;
 
-			var deformArray = slot.deform;
+			ExposedList<float> deformArray = slot.deform;
 			if (deformArray.Count == 0) blend = MixBlend.Setup;
 
 			float[][] vertices = this.vertices;

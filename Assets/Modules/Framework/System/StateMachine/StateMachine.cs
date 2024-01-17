@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Framework
 {
@@ -226,7 +225,6 @@ namespace Framework
         private void ChangeState(TLabel newState)
         {
             previousState = currentState;
-
             if (currentState != null && currentState.onStop != null)
             {
                 currentState.onStop();
@@ -235,7 +233,6 @@ namespace Framework
             currentState = stateDictionary[newState];
 
             currentState.onStart?.Invoke();
-
             OnStateChanged?.Invoke();
         }
 

@@ -1,10 +1,9 @@
 using Framework;
-using UnityEngine;
 
 public class AudioTracker : CacheMonoBehaviour
 {
     public SoundType type;
-    [SerializeField] private int activeSound; public int ActiveSound
+    public int ActiveSound
     {
         get
         {
@@ -26,6 +25,6 @@ public class AudioTracker : CacheMonoBehaviour
 
     public bool IsFullActiveSound()
     {
-        return ActiveSound == AudioConfig.SoundConfigs[type].maxActiveSound;
+        return AudioConfig.SoundConfigs[type].maxActiveSound > 0 && ActiveSound == AudioConfig.SoundConfigs[type].maxActiveSound;
     }
 }

@@ -6,6 +6,46 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Intro.unity
+    guid: 1242dfd28fa276e4b8d6ae150fd2a9f3
+  - enabled: 1
+    path: Assets/Scenes/Home.unity
+    guid: 65bb999f95267be4cbeb32f54d669132
+  - enabled: 1
+    path: Assets/Scenes/Loading.unity
+    guid: 4959d9a08936ad44797b090c9bfd6e4f
+  - enabled: 1
     path: Assets/Scenes/Fishing.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  m_configObjects: {}
+    guid: 38a0e760342cfdf4293ccbb1c4140f7e
+  - enabled: 0
+    path: Assets/Scenes/LearnHome.unity
+    guid: 955eb2419b9b2f44abc32a6ccf4d7413
+  - enabled: 0
+    path: Assets/Scenes/Phonics.unity
+    guid: 5b395799df545d047901f7633b04f203
+  - enabled: 0
+    path: Assets/Scenes/Coloring.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 0
+    path: Assets/Scenes/CrossWord.unity
+    guid: 098569f8f4f6e3f48880f4ad4a7e2df7
+  - enabled: 0
+    path: Assets/Scenes/FlashCard.unity
+    guid: 45aafe1eab804a64590c9170273fd11c
+  - enabled: 0
+    path: Assets/Scenes/ScrambleWord.unity
+    guid: b273e8346180224419d779eb806c0d90
+  - enabled: 0
+    path: Assets/Scenes/FlashphraseScramble.unity
+    guid: 30923abcdf23dc84ca6d5cbfdd6eaf2c
+  - enabled: 0
+    path: Assets/Scenes/MemoryCard.unity
+    guid: 4902acb6a36830c4e8e0424ba7b697c5
+  - enabled: 0
+    path: Assets/Scenes/Matching.unity
+    guid: ded9c56e2a4c2204bbb177e42130fdc4
+  - enabled: 0
+    path: Assets/Scenes/GameHome.unity
+    guid: c0bef17556abadd41a0c33af69810a3a
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 10daefadd6b7dc4458cebd535455251c, type: 2}

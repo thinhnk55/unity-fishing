@@ -63,7 +63,18 @@ namespace Framework
             audioSource.volume = volume;
             audioSource.Play();
         }
+
+        public void StopAllSound() 
+        {
+            foreach(var kvp in audioTrackers)
+            {
+                for (int i = 0; i < kvp.Value.transform.childCount; i++)
+                {
+                    kvp.Value.transform.GetChild(i).gameObject.SetActive(false);
+                }
+            }
+        }
     }
     [Serializable]
-    public class AudioTrackerDictionary : SerializedDictionary<SoundType, AudioTracker> { }
+    public class AudioTrackerDictionary : SerializedDictionary<SoundType, AudioTracker> {}
 }

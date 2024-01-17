@@ -26,5 +26,11 @@ namespace Framework
         {
             _data = defaultValue;
         }
+        public ObservableData(T defaultValue, Callback<T> OnDataChanged)
+        {
+            _data = defaultValue;
+            this.OnDataChanged += OnDataChanged;
+            OnDataChanged?.Invoke(defaultValue);
+        }
     }
 }

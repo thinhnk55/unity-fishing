@@ -1,0 +1,19 @@
+{
+    "name": "IAP",
+    "rootNamespace": "IAP",
+    "references": [
+        "GUID:6793dbd94a12ed146965411768bc4acd",
+        "GUID:08d1c582746949b40ba6a45cdb776bdf",
+        "GUID:60bfecf5cb232594891bc622f40d6bed",
+        "GUID:fe25561d224ed4743af4c60938a59d0b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

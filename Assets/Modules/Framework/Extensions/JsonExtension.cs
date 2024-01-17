@@ -42,7 +42,7 @@ namespace Framework
             return arr;
         }
 
-        public static T ToEnum<T>(this JSONNode json) where T : Enum
+        public static T ToEnum<T>(this JSONNode json, string v) where T : Enum
         {
             return (T)Enum.ToObject(typeof(T), json.AsInt);
         }

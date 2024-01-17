@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,5 +14,6 @@ namespace Framework
             }
         }
         [SerializeField] private List<Sprite> items; public static List<Sprite> Items { get { return Instance.items; } }
+        [SerializeField] private List<Sprite> itemSprites; public static List<Sprite> ItemSprites { get { return Instance.itemSprites; } }
     }
 }

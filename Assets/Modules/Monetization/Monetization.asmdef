@@ -1,0 +1,18 @@
+{
+    "name": "Monetization",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a4cfc1a18fa3a469b96d885db522f42e",
+        "GUID:a10a05a8449c42519fd80f2b8b580de3",
+        "GUID:6793dbd94a12ed146965411768bc4acd"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
